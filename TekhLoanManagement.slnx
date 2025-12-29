@@ -1,1 +1,6 @@
-<Solution />
+<Solution>
+  <Project Path="src/TekhLoanManagement.Api/TekhLoanManagement.Api.csproj" />
+  <Project Path="src/TekhLoanManagement.Application/TekhLoanManagement.Application.csproj" />
+  <Project Path="src/TekhLoanManagement.Domain/TekhLoanManagement.Domain.csproj" />
+  <Project Path="src/TekhLoanManagement.Infrastructure/TekhLoanManagement.Infrastructure.csproj" />
+</Solution>
