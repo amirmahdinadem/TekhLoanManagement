@@ -10,4 +10,10 @@
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TekhLoanManagement.Application\TekhLoanManagement.Application.csproj" />
+    <ProjectReference Include="..\TekhLoanManagement.Domain\TekhLoanManagement.Domain.csproj" />
+    <ProjectReference Include="..\TekhLoanManagement.Infrastructure\TekhLoanManagement.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
