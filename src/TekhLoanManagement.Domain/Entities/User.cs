@@ -6,7 +6,7 @@ using TekhLoanManagement.Domain.Abstractions;
 
 namespace TekhLoanManagement.Domain.Entities
 {
-    public class User : IdentityUser<Guid>
+    public class User : IdentityUser<Guid> //Karbar Vorod Be System
     {
         public Guid MemberId { get; set; }
         public Member Member { get; set; }

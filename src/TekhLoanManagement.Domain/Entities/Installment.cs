@@ -13,5 +13,7 @@ namespace TekhLoanManagement.Domain.Entities
         public decimal Amount { get; set; }
         public DateOnly DueDate { get; set; }
         public InstallmentStatus Status { get; set; } = InstallmentStatus.NotPaid;
+        public Guid? TransactionId { get; set; }
+        public Transaction? Transaction { get; set; }
     }
 }

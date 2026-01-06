@@ -55,5 +55,6 @@ namespace TekhLoanManagement.Infrastructure.Context
         public DbSet<User> User { get; set; } = default!;
         public DbSet<Transaction> Transactions { get; set; } = default!;
         public DbSet<WalletAccount> walletAccounts { get; set; } = default!;
+        public DbSet<Lottery> Lotteries { get; set; } = default!;
     }
 }
