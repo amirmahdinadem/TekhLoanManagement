@@ -192,13 +192,16 @@ namespace TekhLoanManagement.Infrastructure.Migrations
                     b.Property<DateOnly?>("EndDate")
                         .HasColumnType("date");
 
+                    b.Property<double>("LoanAmountLimit")
+                        .HasColumnType("float");
+
                     b.Property<decimal>("MonthlyPaymentAmount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<double>("ProfitRate")
+                    b.Property<double>("NumberOfInstallments")
                         .HasColumnType("float");
 
-                    b.Property<double>("Rate")
+                    b.Property<double>("ProfitRate")
                         .HasColumnType("float");
 
                     b.Property<DateOnly>("StartDate")
@@ -661,11 +664,9 @@ namespace TekhLoanManagement.Infrastructure.Migrations
 
                     b.Navigation("DebitTransactions");
 
-                    b.Navigation("Fund")
-                        .IsRequired();
+                    b.Navigation("Fund");
 
-                    b.Navigation("Member")
-                        .IsRequired();
+                    b.Navigation("Member");
                 });
 #pragma warning restore 612, 618
         }

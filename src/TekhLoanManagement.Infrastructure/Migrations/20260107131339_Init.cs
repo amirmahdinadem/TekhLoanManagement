@@ -78,10 +78,11 @@ namespace TekhLoanManagement.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProfitRate = table.Column<double>(type: "float", nullable: false),
+                    LoanAmountLimit = table.Column<double>(type: "float", nullable: false),
+                    NumberOfInstallments = table.Column<double>(type: "float", nullable: false),
                     MonthlyPaymentAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     StartDate = table.Column<DateOnly>(type: "date", nullable: false),
                     EndDate = table.Column<DateOnly>(type: "date", nullable: true),
-                    Rate = table.Column<double>(type: "float", nullable: false),
                     WalletAccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
