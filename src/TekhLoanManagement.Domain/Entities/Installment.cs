@@ -9,7 +9,7 @@ namespace TekhLoanManagement.Domain.Entities
     public class Installment : BaseEntity<Guid> //Ghest
     {
         public Guid LoanId { get; set; }
-        public Loan Loan { get; set; }
+        public Loan? Loan { get; set; }
         public decimal Amount { get; set; }
         public DateOnly DueDate { get; set; }
         public InstallmentStatus Status { get; set; } = InstallmentStatus.NotPaid;

@@ -17,7 +17,6 @@ namespace TekhLoanManagement.Domain.Entities
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public string? Description { get; set; }
         public TransactionType Type { get; set; }
-        //public Guid InstallmentId { get; set; }
         public Installment? Installment { get; set; }
 
     }

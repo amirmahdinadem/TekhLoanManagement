@@ -13,8 +13,8 @@ namespace TekhLoanManagement.Domain.Entities
         public WalletAccountStatus Status { get; private set; } = WalletAccountStatus.Active;
         public ICollection<Transaction>? DebitTransactions { get; set; } = new List<Transaction>();
         public ICollection<Transaction>? CreditTransactions { get; set; } = new List<Transaction>();
-        public Member Member { get; set; }
-        public Fund Fund { get; set; }
+        public Member? Member { get; set; }
+        public Fund? Fund { get; set; }
 
     }
 }

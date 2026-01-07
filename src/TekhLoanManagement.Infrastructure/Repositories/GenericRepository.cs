@@ -1,43 +1,51 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading;
 using TekhLoanManagement.Application.Interfaces;
 using TekhLoanManagement.Domain.Abstractions;
+using TekhLoanManagement.Infrastructure.Context;
 
 namespace TekhLoanManagement.Infrastructure.Repositories
 {
-    public class GenericRepository<TEntity, TKey> : 
+    public class GenericRepository<TEntity, TKey> :
         IGenericRepository<TEntity, TKey>
         where TEntity : BaseEntity<TKey>
     {
-        public Task AddAsync(TEntity entity)
+        private readonly TekhLoanDbContext _context;
+        public GenericRepository(TekhLoanDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+        public async Task AddAsync(TEntity entity, CancellationToken cancellationToken)
+        {
+            await _context.Set<TEntity>().AddAsync(entity, cancellationToken);
         }
 
         public void Delete(TEntity entity)
         {
-            throw new NotImplementedException();
+            _context.Set<TEntity>().Remove(entity);
         }
 
         public void DeleteRange(IEnumerable<TEntity> entities)
         {
-            throw new NotImplementedException();
+            _context.Set<TEntity>().RemoveRange(entities);
         }
 
-        public Task<List<TEntity>> GetAllAsync()
+        public async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return await _context.Set<TEntity>().AsNoTracking().ToListAsync(cancellationToken);
         }
 
-        public Task<TEntity?> GetByIdAsync(TKey id)
+        public async Task<TEntity?> GetByIdAsync(TKey id, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return await _context.Set<TEntity>().FindAsync(id, cancellationToken);
         }
 
         public Task<List<TResult>> QueryAsync<TResult>(
-            Expression<Func<TEntity, bool>>? predicate = null, 
+            Expression<Func<TEntity, bool>>? predicate = null,
             Expression<Func<TEntity, TResult>> selector = null,
             Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null
@@ -62,7 +70,7 @@ namespace TekhLoanManagement.Infrastructure.Repositories
 
         public void Update(TEntity entity)
         {
-            throw new NotImplementedException();
+            _context.Set<TEntity>().Update(entity);
         }
     }
 }

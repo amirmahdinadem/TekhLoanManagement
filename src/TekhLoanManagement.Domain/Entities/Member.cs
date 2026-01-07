@@ -14,9 +14,9 @@ namespace TekhLoanManagement.Domain.Entities
         public bool IsActive { get; set; } = true;
         public ICollection<Loan>? Loans { get; set; } = new List<Loan>();
         public ICollection<Fund>? Funds { get; set; } = new List<Fund>();
-        public ICollection<Lottery> Lotteries { get; set; } = new List<Lottery>();
+        public ICollection<Lottery>? Lotteries { get; set; } = new List<Lottery>();
         public Guid WalletAccountId { get; set; }
-        public WalletAccount WalletAccount { get; set; }
+        public WalletAccount? WalletAccount { get; set; }
         public User? User { get; set; }
 
     }

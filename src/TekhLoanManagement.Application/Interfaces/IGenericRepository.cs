@@ -9,9 +9,9 @@ namespace TekhLoanManagement.Application.Interfaces
     public interface IGenericRepository<TEntity, TKey>
         where TEntity : BaseEntity<TKey>
     {
-        Task<TEntity?> GetByIdAsync(TKey id);
-        Task<List<TEntity>> GetAllAsync();
-        Task AddAsync(TEntity entity);
+        Task<TEntity?> GetByIdAsync(TKey id, CancellationToken cancellationToken);
+        Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken);
+        Task AddAsync(TEntity entity, CancellationToken cancellationToken);
         void Update(TEntity entity);
         void Delete(TEntity entity);
         void DeleteRange(IEnumerable<TEntity> entities);
@@ -21,15 +21,11 @@ namespace TekhLoanManagement.Application.Interfaces
        Expression<Func<TEntity, TResult>> selector = null!,
        Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null,
        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
-       bool asNoTracking = true
-   );
-       Task<TResult?> QuerySingleAsync<TResult>(
-       Expression<Func<TEntity, bool>> predicate,
-       Expression<Func<TEntity, TResult>> selector,
-       Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null,
-       bool asNoTracking = true
-   );
-
-
+       bool asNoTracking = true);
+        Task<TResult?> QuerySingleAsync<TResult>(
+        Expression<Func<TEntity, bool>> predicate,
+        Expression<Func<TEntity, TResult>> selector,
+        Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null,
+        bool asNoTracking = true);
     }
 }
