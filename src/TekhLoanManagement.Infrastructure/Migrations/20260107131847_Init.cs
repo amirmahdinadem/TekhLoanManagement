@@ -38,17 +38,17 @@ namespace TekhLoanManagement.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "walletAccounts",
+                name: "WalletAccounts",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     WalletAccountNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Balance = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Balance = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_walletAccounts", x => x.Id);
+                    table.PrimaryKey("PK_WalletAccounts", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -80,7 +80,7 @@ namespace TekhLoanManagement.Infrastructure.Migrations
                     ProfitRate = table.Column<double>(type: "float", nullable: false),
                     LoanAmountLimit = table.Column<double>(type: "float", nullable: false),
                     NumberOfInstallments = table.Column<double>(type: "float", nullable: false),
-                    MonthlyPaymentAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    MonthlyPaymentAmount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     StartDate = table.Column<DateOnly>(type: "date", nullable: false),
                     EndDate = table.Column<DateOnly>(type: "date", nullable: true),
                     WalletAccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
@@ -89,9 +89,9 @@ namespace TekhLoanManagement.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Funds", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Funds_walletAccounts_WalletAccountId",
+                        name: "FK_Funds_WalletAccounts_WalletAccountId",
                         column: x => x.WalletAccountId,
-                        principalTable: "walletAccounts",
+                        principalTable: "WalletAccounts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -112,9 +112,9 @@ namespace TekhLoanManagement.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Members", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Members_walletAccounts_WalletAccountId",
+                        name: "FK_Members_WalletAccounts_WalletAccountId",
                         column: x => x.WalletAccountId,
-                        principalTable: "walletAccounts",
+                        principalTable: "WalletAccounts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -126,7 +126,7 @@ namespace TekhLoanManagement.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DebitWalletAccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreditWalletAccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Type = table.Column<int>(type: "int", nullable: false)
@@ -135,15 +135,15 @@ namespace TekhLoanManagement.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Transactions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Transactions_walletAccounts_CreditWalletAccountId",
+                        name: "FK_Transactions_WalletAccounts_CreditWalletAccountId",
                         column: x => x.CreditWalletAccountId,
-                        principalTable: "walletAccounts",
+                        principalTable: "WalletAccounts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Transactions_walletAccounts_DebitWalletAccountId",
+                        name: "FK_Transactions_WalletAccounts_DebitWalletAccountId",
                         column: x => x.DebitWalletAccountId,
-                        principalTable: "walletAccounts",
+                        principalTable: "WalletAccounts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -213,7 +213,7 @@ namespace TekhLoanManagement.Infrastructure.Migrations
                     MemberId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FundId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LotteryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     InstallmentCount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -354,7 +354,7 @@ namespace TekhLoanManagement.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LoanId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     DueDate = table.Column<DateOnly>(type: "date", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     TransactionId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
@@ -530,7 +530,7 @@ namespace TekhLoanManagement.Infrastructure.Migrations
                 name: "Members");
 
             migrationBuilder.DropTable(
-                name: "walletAccounts");
+                name: "WalletAccounts");
         }
     }
 }

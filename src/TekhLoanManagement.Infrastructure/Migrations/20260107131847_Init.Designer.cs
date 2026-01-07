@@ -12,7 +12,7 @@ using TekhLoanManagement.Infrastructure.Context;
 namespace TekhLoanManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(TekhLoanDbContext))]
-    [Migration("20260107131339_Init")]
+    [Migration("20260107131847_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -199,6 +199,7 @@ namespace TekhLoanManagement.Infrastructure.Migrations
                         .HasColumnType("float");
 
                     b.Property<decimal>("MonthlyPaymentAmount")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<double>("NumberOfInstallments")
@@ -228,6 +229,7 @@ namespace TekhLoanManagement.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateOnly>("DueDate")
@@ -260,6 +262,7 @@ namespace TekhLoanManagement.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid>("FundId")
@@ -344,6 +347,7 @@ namespace TekhLoanManagement.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("CreatedAt")
@@ -449,6 +453,7 @@ namespace TekhLoanManagement.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Balance")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Status")
@@ -459,7 +464,7 @@ namespace TekhLoanManagement.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("walletAccounts");
+                    b.ToTable("WalletAccounts");
                 });
 
             modelBuilder.Entity("FundMember", b =>
