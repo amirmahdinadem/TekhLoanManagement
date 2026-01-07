@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Text;
+﻿using System.Linq.Expressions;
 using TekhLoanManagement.Domain.Abstractions;
 
 namespace TekhLoanManagement.Application.Interfaces
@@ -15,7 +12,6 @@ namespace TekhLoanManagement.Application.Interfaces
         void Update(TEntity entity);
         void Delete(TEntity entity);
         void DeleteRange(IEnumerable<TEntity> entities);
-        Task SaveChangesAsync();
         Task<List<TResult>> QueryAsync<TResult>(
        Expression<Func<TEntity, bool>>? predicate = null,
        Expression<Func<TEntity, TResult>> selector = null!,

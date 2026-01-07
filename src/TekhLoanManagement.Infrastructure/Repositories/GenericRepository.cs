@@ -1,11 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading;
 using TekhLoanManagement.Application.Interfaces;
 using TekhLoanManagement.Domain.Abstractions;
+using TekhLoanManagement.Domain.Interfaces;
 using TekhLoanManagement.Infrastructure.Context;
 
 namespace TekhLoanManagement.Infrastructure.Repositories
@@ -26,7 +23,15 @@ namespace TekhLoanManagement.Infrastructure.Repositories
 
         public void Delete(TEntity entity)
         {
-            _context.Set<TEntity>().Remove(entity);
+            if (entity is ISoftDeletable softDeletable)
+            {
+                softDeletable.IsDeleted = true;
+                _context.Set<TEntity>().Update(entity);
+            }
+            else
+            {
+                _context.Set<TEntity>().Remove(entity);
+            }
         }
 
         public void DeleteRange(IEnumerable<TEntity> entities)
@@ -42,6 +47,11 @@ namespace TekhLoanManagement.Infrastructure.Repositories
         public async Task<TEntity?> GetByIdAsync(TKey id, CancellationToken cancellationToken)
         {
             return await _context.Set<TEntity>().FindAsync(id, cancellationToken);
+        }
+
+        public void Update(TEntity entity)
+        {
+            _context.Set<TEntity>().Update(entity);
         }
 
         public Task<List<TResult>> QueryAsync<TResult>(
@@ -61,16 +71,6 @@ namespace TekhLoanManagement.Infrastructure.Repositories
             bool asNoTracking = true)
         {
             throw new NotImplementedException();
-        }
-
-        public Task SaveChangesAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update(TEntity entity)
-        {
-            _context.Set<TEntity>().Update(entity);
         }
     }
 }
