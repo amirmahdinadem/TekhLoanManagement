@@ -54,14 +54,28 @@ namespace TekhLoanManagement.Infrastructure.Repositories
             _context.Set<TEntity>().Update(entity);
         }
 
-        public Task<List<TResult>> QueryAsync<TResult>(
+        public async Task<List<TResult>> QueryAsync<TResult>(
             Expression<Func<TEntity, bool>>? predicate = null,
             Expression<Func<TEntity, TResult>> selector = null,
             Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null
             , bool asNoTracking = true)
         {
-            throw new NotImplementedException();
+            IQueryable<TEntity> query = _context.Set<TEntity>();
+
+            if (asNoTracking)
+                query = query.AsNoTracking();
+
+            if (include != null)
+                query = include(query);
+
+            if (predicate != null)
+                query = query.Where(predicate);
+
+            if (orderBy != null)
+                query = orderBy(query);
+
+            return await query.Select(selector).ToListAsync();
         }
 
         public Task<TResult?> QuerySingleAsync<TResult>(
