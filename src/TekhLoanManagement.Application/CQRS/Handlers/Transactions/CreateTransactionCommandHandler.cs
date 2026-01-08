@@ -38,6 +38,13 @@ namespace TekhLoanManagement.Application.CQRS.Handlers.Transactions
                 from.Debit(request.Amount);
                 to.Credit(request.Amount);
 
+                if (request.InstallmentId is not null)
+                {
+                    var installment = await _unitOfWork.Installments.GetByIdAsync(request.InstallmentId.Value, cancellationToken);
+                    if (installment == null)
+                        throw new NotFoundException("Installment Not Found!");
+                }
+
                 var transaction = _mapper.Map<Transaction>(request);
                 await _unitOfWork.Transactions.AddAsync(transaction, cancellationToken);
                 await _unitOfWork.CommitAsync();

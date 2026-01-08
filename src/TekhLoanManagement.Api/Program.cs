@@ -1,3 +1,4 @@
+using TekhLoanManagement.Api.Extensions.ApplicationBuilder;
 using TekhLoanManagement.Api.Extensions.ServiceCollection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +22,8 @@ builder.Services
 
 
 var app = builder.Build();
+
+app.UseCustomMiddlewares();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
