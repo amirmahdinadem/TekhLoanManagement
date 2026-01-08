@@ -25,8 +25,9 @@ namespace TekhLoanManagement.Application.CQRS.Handlers.Loans.Create
         public async Task<LoanDto> Handle(CreateLoanCommand request, CancellationToken cancellationToken)
         {
 
-            var loan = new Loan(request.FundId, request.Amount, request.InstallmentCount , request.StartMonth , request.StartYear);
-            loan.CreateLoanInstallment();
+            var loan = new Loan(request.FundId, request.Amount, request.InstallmentCount, request.StartMonth, request.StartYear);
+            var fund = await _unitOfWork.Funds.GetByIdAsync(request.FundId, cancellationToken);
+            loan.CreateLoanInstallment(fund.ProfitRate);
             var lottery = await _unitOfWork.Lotteries.AddAsync(loan.CreateLottery(), cancellationToken);
             loan.LotteryId = lottery.Id;
             foreach (var item in loan.Installments)

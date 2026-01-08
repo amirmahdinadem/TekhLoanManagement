@@ -31,11 +31,11 @@ namespace TekhLoanManagement.Domain.Entities
         public int InstallmentCount { get; set; }
         public ICollection<Installment>? Installments { get; set; } = new List<Installment>();
 
-        public void CreateLoanInstallment()
+        public void CreateLoanInstallment(double profitRate)
         {
             for (int i = 0; i < InstallmentCount; i++)
             {
-                Installments.Add(new Installment(Id, (Amount + (Amount * (decimal)(Fund.ProfitRate / 100)) / InstallmentCount), StartDate.AddMonths(i)));
+                Installments.Add(new Installment(Id, (Amount + (Amount * (decimal)(profitRate / 100)) / InstallmentCount), StartDate.AddMonths(i)));
 
             }
         }
