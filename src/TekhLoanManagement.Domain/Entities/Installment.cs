@@ -25,6 +25,11 @@ namespace TekhLoanManagement.Domain.Entities
         public Guid? TransactionId { get; set; }
         public Transaction? Transaction { get; set; }
 
+        public void Payment(Guid transactionId)
+        {
+            Status = InstallmentStatus.Paid;
+            TransactionId = transactionId;
+        }
         public void Guard(decimal amount)
         {
             if (amount < 0)

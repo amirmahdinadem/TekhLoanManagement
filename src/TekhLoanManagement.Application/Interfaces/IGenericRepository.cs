@@ -8,7 +8,7 @@ namespace TekhLoanManagement.Application.Interfaces
     {
         Task<TEntity?> GetByIdAsync(TKey id, CancellationToken cancellationToken);
         Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken);
-        Task AddAsync(TEntity entity, CancellationToken cancellationToken);
+        Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken);
         void Update(TEntity entity);
         void Delete(TEntity entity);
         void DeleteRange(IEnumerable<TEntity> entities);
