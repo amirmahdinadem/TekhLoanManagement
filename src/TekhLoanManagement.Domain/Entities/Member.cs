@@ -5,7 +5,7 @@ using TekhLoanManagement.Domain.Abstractions;
 
 namespace TekhLoanManagement.Domain.Entities
 {
-    public class Member : BaseEntity<Guid>
+    public class Member : BaseEntity<Guid> //Karmand
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -14,8 +14,9 @@ namespace TekhLoanManagement.Domain.Entities
         public bool IsActive { get; set; } = true;
         public ICollection<Loan>? Loans { get; set; } = new List<Loan>();
         public ICollection<Fund>? Funds { get; set; } = new List<Fund>();
+        public ICollection<Lottery>? Lotteries { get; set; } = new List<Lottery>();
         public Guid WalletAccountId { get; set; }
-        public WalletAccount WalletAccount { get; set; }
+        public WalletAccount? WalletAccount { get; set; }
         public User? User { get; set; }
 
     }

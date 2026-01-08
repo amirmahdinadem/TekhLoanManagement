@@ -1,6 +1,1 @@
 @TekhLoanManagement.Api_HostAddress = http://localhost:5221
-
-GET {{TekhLoanManagement.Api_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
