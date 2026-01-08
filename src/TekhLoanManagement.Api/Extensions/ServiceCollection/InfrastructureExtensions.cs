@@ -1,9 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using TekhLoanManagement.Application.Interfaces;
 using TekhLoanManagement.Domain.Entities;
 using TekhLoanManagement.Infrastructure.Context;
+using TekhLoanManagement.Infrastructure.Generators;
+using TekhLoanManagement.Infrastructure.Repositories;
+using TekhLoanManagement.Infrastructure.UnitOfWork;
 
-namespace TekhLoanManagement.Api.Extensions
+namespace TekhLoanManagement.Api.Extensions.ServiceCollection
 {
     public static class InfrastructureExtensions
     {
@@ -22,6 +26,10 @@ namespace TekhLoanManagement.Api.Extensions
             })
             .AddEntityFrameworkStores<TekhLoanDbContext>()
             .AddDefaultTokenProviders();
+
+            services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<INumberGenerator, AccountNumberGenerator>();
 
             return services;
         }
