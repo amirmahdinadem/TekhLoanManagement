@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿
+
+using System.Reflection;
+using TekhLoanManagement.Application.CQRS.Commands.WalletAccounts;
 
 namespace TekhLoanManagement.Api.Extensions.ServiceCollection
 {
@@ -7,6 +10,8 @@ namespace TekhLoanManagement.Api.Extensions.ServiceCollection
         public static IServiceCollection AddApplicationServices(
             this IServiceCollection services)
         {
+            services.AddAutoMapper(cfg =>
+            cfg.AddMaps(typeof(CreateWalletAccountCommand).Assembly));
 
 
             return services;

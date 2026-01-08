@@ -12,6 +12,7 @@ namespace TekhLoanManagement.Domain.Entities
         public string? WalletAccountNumber { get; set; }
         public decimal Balance { get; private set; }
         public WalletAccountStatus Status { get; private set; } = WalletAccountStatus.Active;
+        public WalletAccountType Type { get; set; }
         public ICollection<Transaction>? DebitTransactions { get; set; } = new List<Transaction>();
         public ICollection<Transaction>? CreditTransactions { get; set; } = new List<Transaction>();
         public Member? Member { get; set; }

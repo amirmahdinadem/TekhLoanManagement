@@ -12,20 +12,14 @@
     <Folder Include="CQRS\Commands\Installments\" />
     <Folder Include="CQRS\Commands\Lotteries\" />
     <Folder Include="CQRS\Commands\Members\" />
-    <Folder Include="CQRS\Commands\WalletAccounts\" />
-    <Folder Include="CQRS\Commands\Transactions\" />
     <Folder Include="CQRS\Handlers\Funds\" />
     <Folder Include="CQRS\Handlers\Installments\" />
     <Folder Include="CQRS\Handlers\Lotteries\" />
     <Folder Include="CQRS\Handlers\Members\" />
-    <Folder Include="CQRS\Handlers\Transactions\" />
-    <Folder Include="CQRS\Handlers\WalletAccounts\" />
     <Folder Include="CQRS\Queries\Funds\" />
     <Folder Include="CQRS\Queries\Installments\" />
     <Folder Include="CQRS\Queries\Lotteries\" />
     <Folder Include="CQRS\Queries\Members\" />
-    <Folder Include="CQRS\Queries\Transactions\" />
-    <Folder Include="CQRS\Queries\WalletAccounts\" />
     <Folder Include="DTOs\Requests\Funds\" />
     <Folder Include="DTOs\Requests\Installments\" />
     <Folder Include="DTOs\Requests\Loans\" />
@@ -38,12 +32,11 @@
     <Folder Include="DTOs\Responses\Loans\" />
     <Folder Include="DTOs\Responses\Lotteries\" />
     <Folder Include="DTOs\Responses\Members\" />
-    <Folder Include="DTOs\Responses\Transactions\" />
-    <Folder Include="DTOs\Responses\WalletAccounts\" />
     <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="16.0.0" />
     <PackageReference Include="FluentValidation" Version="12.1.1" />
     <PackageReference Include="MediatR" Version="14.0.0" />
   </ItemGroup>
