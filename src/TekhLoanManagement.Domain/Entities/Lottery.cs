@@ -10,7 +10,9 @@ namespace TekhLoanManagement.Domain.Entities
     public class Lottery : BaseEntity<Guid>
     {
         public ICollection<Member>? Members { get; set; } = new List<Member>();
-        public Loan? Loan { get; set; }
-        public LotteryStatus Status { get; set; }
+        public Loan? Loan { get; set; } = null;
+        public LotteryStatus Status { get; set; } = LotteryStatus.NotHeld;
+
     }
+
 }
