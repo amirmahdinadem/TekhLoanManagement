@@ -17,6 +17,7 @@ namespace TekhLoanManagement.Domain.Entities
         public DateOnly? EndDate { get; set; }
         public Guid WalletAccountId { get; set; }
         public WalletAccount? WalletAccount { get; set; }
+       
 
     }
 }

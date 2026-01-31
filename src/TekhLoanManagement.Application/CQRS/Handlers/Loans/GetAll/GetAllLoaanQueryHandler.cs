@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using TekhLoanManagement.Application.CQRS.Interfaces;
 using TekhLoanManagement.Application.CQRS.Queries.Loans.GetAll;
 using TekhLoanManagement.Application.DTOs.Responses.Loans;
 using TekhLoanManagement.Application.Interfaces;
+using TekhLoanManagement.Domain.Entities;
 
 namespace TekhLoanManagement.Application.CQRS.Handlers.Loans.GetAll
 {
@@ -18,7 +20,11 @@ namespace TekhLoanManagement.Application.CQRS.Handlers.Loans.GetAll
 
         public async Task<IEnumerable<LoanDto>> Handle(GetAllLoanQuery request, CancellationToken cancellationToken)
         {
-            var loans = await _unitOfWork.Loans.GetAllAsync(cancellationToken);
+            var loans = await _unitOfWork.Loans.QueryAsync<Loan>(include: x => x.Include(x => x.Fund)
+                                                                                .ThenInclude(x => x.Loans)
+                                                                                .Include(x => x.Installments)
+                                                                                .Include(x => x.Lottery)
+                                                                                .Include(x => x.Member));
             return _mapper.Map<IEnumerable<LoanDto>>(loans);
 
         }
