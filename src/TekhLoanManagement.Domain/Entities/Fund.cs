@@ -38,6 +38,7 @@ namespace TekhLoanManagement.Domain.Entities
         public double ProfitRate { get; private set; }
         public decimal SeedMoney { get; private set; }
         public Guid WalletAccountId { get; private set; }
+        public WalletAccount WalletAccount { get; private set; }
 
         private List<Loan> _loans = new List<Loan>(); 
 
