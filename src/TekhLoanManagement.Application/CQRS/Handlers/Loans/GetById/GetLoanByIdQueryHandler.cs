@@ -22,9 +22,7 @@ namespace TekhLoanManagement.Application.CQRS.Handlers.Loans.GetById
 
         public async Task<LoanDto> Handle(GetLoanByIdQuery request, CancellationToken cancellationToken)
         {
-            var loans = await _unitOfWork.Loans.QueryAsync<Loan>(include: x => x.Include(x => x.Fund)
-                                                                              .ThenInclude(x => x.Loans)
-                                                                              .Include(x => x.Installments)
+            var loans = await _unitOfWork.Loans.QueryAsync<Loan>(include: x => x.Include(x => x.Installments)
                                                                               .Include(x => x.Lottery)
                                                                               .Include(x => x.Member));
             var loan = loans.FirstOrDefault(x => x.Id == request.LoanId);
