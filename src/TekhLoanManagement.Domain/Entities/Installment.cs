@@ -27,6 +27,8 @@ namespace TekhLoanManagement.Domain.Entities
 
         public void Payment(Guid transactionId)
         {
+            if (Status == InstallmentStatus.Paid)
+                throw new DomainException("This Installment Was Paid Before");
             Status = InstallmentStatus.Paid;
             TransactionId = transactionId;
         }

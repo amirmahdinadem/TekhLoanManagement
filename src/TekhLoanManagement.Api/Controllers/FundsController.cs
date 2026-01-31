@@ -57,7 +57,6 @@ namespace TekhLoanManagement.Api.Controllers
                 fundId);
         }
         [HttpPost("{fundId}/members")]
-        [HttpPost("{fundId:guid}/members")]
         public async Task<IActionResult> AddMember(
             Guid fundId,
             [FromBody] Guid memberId,

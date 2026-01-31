@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Text;
 using TekhLoanManagement.Domain.Abstractions;
 using TekhLoanManagement.Domain.Enums;
+using TekhLoanManagement.Domain.Exceptions;
 
 namespace TekhLoanManagement.Domain.Entities
 {
@@ -13,6 +14,16 @@ namespace TekhLoanManagement.Domain.Entities
         public Loan? Loan { get; set; } = null;
         public LotteryStatus Status { get; set; } = LotteryStatus.NotHeld;
 
+        public void AddMember(Member member)
+        {
+            if (Members.Any(x => x.Id == member.Id))
+                throw new DomainException("You Joined Before");
+            Members.Add(member);
+        }
+        public void Celebration()
+        {
+
+        }
     }
 
 }
