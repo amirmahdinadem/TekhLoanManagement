@@ -20,8 +20,8 @@ namespace TekhLoanManagement.Application.CQRS.Handlers.Loans.GetAll
 
         public async Task<IEnumerable<LoanDto>> Handle(GetAllLoanQuery request, CancellationToken cancellationToken)
         {
-            var loans = await _unitOfWork.Loans.QueryAsync<Loan>(include: x => x.Include(x => x.Fund)
-                                                                                .ThenInclude(x => x.Loans)
+            var loans = await _unitOfWork.Loans.QueryAsync<Loan>(include: x => x
+                                                                                
                                                                                 .Include(x => x.Installments)
                                                                                 .Include(x => x.Lottery)
                                                                                 .Include(x => x.Member));

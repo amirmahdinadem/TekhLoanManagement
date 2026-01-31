@@ -52,7 +52,6 @@ public class CreateLoanCommandHandler : ICommandHandler<CreateLoanCommand, LoanD
         }
         await _unitOfWork.Loans.AddAsync(loan, cancellationToken);
         await _unitOfWork.SaveChangesAsync();
-        await fund.Add
         return _mapper.Map<LoanDto>(loan);
 
     }
