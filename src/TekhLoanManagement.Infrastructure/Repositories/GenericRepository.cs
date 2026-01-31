@@ -56,7 +56,7 @@ namespace TekhLoanManagement.Infrastructure.Repositories
 
         public async Task<List<TResult>> QueryAsync<TResult>(
             Expression<Func<TEntity, bool>>? predicate = null,
-            Expression<Func<TEntity, TResult>> selector = null,
+            Expression<Func<TEntity, TResult>> selector = null!,
             Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null
             , bool asNoTracking = true)

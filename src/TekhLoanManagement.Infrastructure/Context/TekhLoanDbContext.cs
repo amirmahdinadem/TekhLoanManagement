@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using TekhLoanManagement.Domain.Entities;
+using TekhLoanManagement.Infrastructure.Security;
 
 namespace TekhLoanManagement.Infrastructure.Context
 {
@@ -78,5 +79,7 @@ namespace TekhLoanManagement.Infrastructure.Context
         public DbSet<Transaction> Transactions { get; set; } = default!;
         public DbSet<WalletAccount> WalletAccounts { get; set; } = default!;
         public DbSet<Lottery> Lotteries { get; set; } = default!;
+        public DbSet<RefreshToken> RefreshTokens { get; set; } = default!;
+
     }
 }
