@@ -5,7 +5,7 @@ using TekhLoanManagement.Application.CQRS.Commands.Funds;
 using TekhLoanManagement.Application.CQRS.Interfaces;
 using TekhLoanManagement.Application.Interfaces;
 
-namespace TekhLoanManagement.Application.CQRS.Handlers.Funds
+namespace TekhLoanManagement.Application.CQRS.Handlers.Funds.CommandHandlers
 {
     public class AddMemberCommandHandler : ICommandHandler<AddMemberCommand>
     {

@@ -6,7 +6,7 @@ using TekhLoanManagement.Application.CQRS.Interfaces;
 using TekhLoanManagement.Application.Interfaces;
 using TekhLoanManagement.Domain.Entities;
 
-namespace TekhLoanManagement.Application.CQRS.Handlers.Funds
+namespace TekhLoanManagement.Application.CQRS.Handlers.Funds.CommandHandlers
 {
     public class CreateFundCommandHandler : ICommandHandler<CreateFundCommand, Guid>  
     {
