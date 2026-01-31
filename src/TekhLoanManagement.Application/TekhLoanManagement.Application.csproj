@@ -11,14 +11,14 @@
     <Folder Include="CQRS\Commands\Funds\" />
     <Folder Include="CQRS\Commands\Installments\" />
     <Folder Include="CQRS\Commands\Loans\" />
+    <Folder Include="CQRS\Commands\Members\" />
     <Folder Include="CQRS\Commands\Lotteries\" />
     <Folder Include="CQRS\Handlers\Funds\" />
     <Folder Include="CQRS\Handlers\Installments\" />
     <Folder Include="CQRS\Handlers\Loans\" />
     <Folder Include="CQRS\Handlers\Lotteries\" />
+    <Folder Include="CQRS\Handlers\Members\" />
     <Folder Include="CQRS\Queries\Funds\" />
-    <Folder Include="CQRS\Queries\Installments\" />
-    <Folder Include="CQRS\Queries\Loans\" />
     <Folder Include="CQRS\Queries\Lotteries\" />
     <Folder Include="DTOs\Requests\Funds\" />
     <Folder Include="DTOs\Requests\Installments\" />
@@ -36,6 +36,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="16.0.0" />
+    <PackageReference Include="FluentValidation" Version="12.1.1" />
     <PackageReference Include="MediatR" Version="14.0.0" />
   </ItemGroup>
 

@@ -1,4 +1,7 @@
 ﻿using AutoMapper;
+using FluentValidation;
+using System.Linq.Expressions;
+using TekhLoanManagement.Application.CQRS.Commands.Transactions;
 using TekhLoanManagement.Application.CQRS.Commands.WalletAccounts;
 using TekhLoanManagement.Application.CQRS.Interfaces;
 using TekhLoanManagement.Application.DTOs.Responses.WalletAccounts;
@@ -29,6 +32,19 @@ namespace TekhLoanManagement.Application.CQRS.Handlers.WalletAccounts
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
             return _mapper.Map<WalletAccountResponseDto>(walletAccount);
+
+        }
+    }
+
+    public class CreateTransactionRequestDtoValidator : AbstractValidator<CreateTransactionCommand>
+    {
+        public CreateTransactionRequestDtoValidator()
+        {
+            RuleFor(x => x.DebitWalletAccountId)
+       .NotEmpty();
+
+            RuleFor(x => x.CreditWalletAccountId)
+       .NotEmpty();
 
         }
     }

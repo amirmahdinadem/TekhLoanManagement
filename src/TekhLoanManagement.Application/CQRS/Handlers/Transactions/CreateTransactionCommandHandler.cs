@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -40,6 +41,15 @@ namespace TekhLoanManagement.Application.CQRS.Handlers.Transactions
 
                 var transaction = _mapper.Map<Transaction>(request);
                 await _unitOfWork.Transactions.AddAsync(transaction, cancellationToken);
+
+                if (request.InstallmentId is not null)
+                {
+                    var installment = await _unitOfWork.Installments.GetByIdAsync(request.InstallmentId.Value, cancellationToken);
+                    if (installment == null)
+                        throw new NotFoundException("Installment Not Found!");
+
+                    installment.Payment(transaction.Id);
+                }
                 await _unitOfWork.CommitAsync();
                 return _mapper.Map<TransactionResponseDto>(transaction);
             }

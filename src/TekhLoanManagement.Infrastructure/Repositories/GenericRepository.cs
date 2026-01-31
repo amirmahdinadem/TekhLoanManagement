@@ -16,9 +16,10 @@ namespace TekhLoanManagement.Infrastructure.Repositories
         {
             _context = context;
         }
-        public async Task AddAsync(TEntity entity, CancellationToken cancellationToken)
+        public async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken)
         {
             await _context.Set<TEntity>().AddAsync(entity, cancellationToken);
+            return entity;
         }
 
         public void Delete(TEntity entity)

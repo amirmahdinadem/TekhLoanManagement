@@ -6,7 +6,7 @@ namespace TekhLoanManagement.Domain.Enums
 {
     public enum LotteryStatus
     {
-        IsFinished,
-        IsReady
+        NotHeld ,
+        Held ,
     }
 }

@@ -274,7 +274,7 @@ namespace TekhLoanManagement.Infrastructure.Migrations
                     b.Property<Guid>("LotteryId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("MemberId")
+                    b.Property<Guid?>("MemberId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateOnly>("StartDate")
@@ -595,9 +595,7 @@ namespace TekhLoanManagement.Infrastructure.Migrations
 
                     b.HasOne("TekhLoanManagement.Domain.Entities.Member", "Member")
                         .WithMany("Loans")
-                        .HasForeignKey("MemberId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MemberId");
 
                     b.Navigation("Fund");
 
