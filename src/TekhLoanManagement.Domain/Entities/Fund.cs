@@ -21,10 +21,8 @@ namespace TekhLoanManagement.Domain.Entities
             StartDate = DateOnly.FromDateTime(DateTime.Now);
             SeedMoney = CalculateSeedMoney(monthlyPaymentAmount,
                                             numberOfInstallments);
-            
-
-            
-
+            IsActive = true;    
+           
         }
         protected Fund()
         {
@@ -38,13 +36,12 @@ namespace TekhLoanManagement.Domain.Entities
         public double ProfitRate { get; private set; }
         public decimal SeedMoney { get; private set; }
         public Guid WalletAccountId { get; private set; }
-        public WalletAccount WalletAccount { get; private set; }
-
-        private List<Loan> _loans = new List<Loan>(); 
+        public bool IsActive {  get; private set; }
 
         private List<Member> _members = new List<Member>();
-        public IReadOnlyCollection<Loan>? Loans  => _loans ;
         public IReadOnlyCollection<Member>? Members  => _members ;
+
+        public void AddMember(Member member) => _members.Add(member);
 
         private decimal CalculateSeedMoney(decimal monthlyPaymentAmount,
                                           int numberOfInstallments)
@@ -53,9 +50,20 @@ namespace TekhLoanManagement.Domain.Entities
                    (monthlyPaymentAmount/numberOfInstallments))*
                    (numberOfInstallments/2);
         }
-               
-        public void AddLoan(Loan loan) => _loans.Add(loan);
-        public void AddMember(Member member) => _members.Add(member);
+        public void DeActiveFund() {
+            if (IsActive)
+            {
+                IsActive = false;
+                EndDate = DateOnly.FromDateTime(DateTime.Now);
+            }
+        }
+
+
+
+       //public WalletAccount WalletAccount { get; private set; }
+        //private List<Loan> _loans = new List<Loan>(); 
+        //public IReadOnlyCollection<Loan>? Loans  => _loans ;
+        //public void AddLoan(Loan loan) => _loans.Add(loan);
         
 
        

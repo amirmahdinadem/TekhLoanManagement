@@ -6,5 +6,6 @@ namespace TekhLoanManagement.Application.CQRS.Handlers.Funds.QueryHandlers
 {
     public class GetAllQueryHandler
     {
+
     }
 }

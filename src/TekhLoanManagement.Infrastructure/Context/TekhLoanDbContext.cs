@@ -44,10 +44,10 @@ namespace TekhLoanManagement.Infrastructure.Context
                 .WithOne(a => a.WalletAccount)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<WalletAccount>()
-               .HasOne(t => t.Fund)
-               .WithOne(a => a.WalletAccount)
-               .OnDelete(DeleteBehavior.Restrict);
+            //modelBuilder.Entity<WalletAccount>()
+            //   .HasOne(t => t.Fund)
+            //   .WithOne(a => a.WalletAccount)
+            //   .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<WalletAccount>()
            .Property(t => t.Balance)
