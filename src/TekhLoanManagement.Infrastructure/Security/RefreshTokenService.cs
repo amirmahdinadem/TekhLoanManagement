@@ -13,12 +13,11 @@ namespace TekhLoanManagement.Infrastructure.Security
     public class RefreshTokenService:IRefreshTokenService
     {
         private readonly TekhLoanDbContext _context;
-        //private readonly IMapper _mapper;
-
+       
         public RefreshTokenService(TekhLoanDbContext context)
         {
             _context = context;
-            //_mapper = mapper;
+            
         }
         public async Task<string> GenerateTokenAsync(Guid userId)
         {

@@ -24,6 +24,8 @@ namespace TekhLoanManagement.Infrastructure.Context
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(TekhLoanDbContext).Assembly);
+
             modelBuilder.HasSequence<long>("AccountNumberSequence")
             .StartsAt(1000000000)
             .IncrementsBy(1);

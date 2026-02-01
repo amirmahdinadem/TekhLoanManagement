@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Text;
+using FluentValidation;
 using TekhLoanManagement.Application.DTOs;
 using TekhLoanManagement.Application.Interfaces;
 using TekhLoanManagement.Domain.Entities;
@@ -16,24 +17,24 @@ namespace TekhLoanManagement.Infrastructure.Identity
         private readonly ILogger<IdentityService> _logger;
         private readonly IJwtTokenService _jwtTokenService;
         private readonly IRefreshTokenService _refreshTokenService;
-        //private readonly IValidator<LoginRequestDto> _validator;
-        //private readonly IValidator<RegisterRequestDto> _registerValidator;
+        private readonly IValidator<LoginDto> _validator;
+        private readonly IValidator<RegisterDto> _registerValidator;
 
-        public IdentityService(UserManager<User> userManager, ILogger<IdentityService> logger, IJwtTokenService jwtTokenService, IRefreshTokenService refreshTokenService /*IValidator<LoginRequestDto> validator, IValidator<RegisterRequestDto> registerValidator*/)
+        public IdentityService(UserManager<User> userManager, ILogger<IdentityService> logger, IJwtTokenService jwtTokenService, IRefreshTokenService refreshTokenService ,IValidator<LoginDto> validator, IValidator<RegisterDto> registerValidator)
         {
             _userManager = userManager;
             _logger = logger;
             _jwtTokenService = jwtTokenService;
             _refreshTokenService = refreshTokenService;
-            //_validator = validator;
-            //_registerValidator = registerValidator;
+            _validator = validator;
+            _registerValidator = registerValidator;
         }
         public async Task<(string AccessToken, string RefreshToken)> LoginAsync(LoginDto input)
         {
-            //await _validator.ValidateAndThrowAsync(input);
-            if (string.IsNullOrWhiteSpace(input.UserName) ||
-                string.IsNullOrWhiteSpace(input.Password))
-                throw new ArgumentException("Username and password are required.");
+            await _validator.ValidateAndThrowAsync(input);
+            //if (string.IsNullOrWhiteSpace(input.UserName) ||
+            //    string.IsNullOrWhiteSpace(input.Password))
+            //    throw new ArgumentException("Username and password are required.");
 
             var user = await _userManager.FindByNameAsync(input.UserName);
             if (user == null)
@@ -52,10 +53,10 @@ namespace TekhLoanManagement.Infrastructure.Identity
         }
         public async Task RegisterAsync(RegisterDto input)
         {
-            //await _registerValidator.ValidateAndThrowAsync(input);
-            if (string.IsNullOrWhiteSpace(input.UserName) ||
-                string.IsNullOrWhiteSpace(input.Password))
-                throw new ArgumentException("UserName and password are required.");
+            await _registerValidator.ValidateAndThrowAsync(input);
+            //if (string.IsNullOrWhiteSpace(input.UserName) ||
+            //    string.IsNullOrWhiteSpace(input.Password))
+            //    throw new ArgumentException("UserName and password are required.");
 
             var user = new User
             {
