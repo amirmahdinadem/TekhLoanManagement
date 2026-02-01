@@ -2,6 +2,7 @@
 using TekhLoanManagement.Application.CQRS.Interfaces;
 using TekhLoanManagement.Application.CQRS.Queries.WalletAccounts;
 using TekhLoanManagement.Application.DTOs.Responses.WalletAccounts;
+using TekhLoanManagement.Application.Exceptions;
 using TekhLoanManagement.Application.Interfaces;
 
 namespace TekhLoanManagement.Application.CQRS.Handlers.WalletAccounts
@@ -20,7 +21,7 @@ namespace TekhLoanManagement.Application.CQRS.Handlers.WalletAccounts
         public async Task<WalletAccountResponseDto> Handle(GetWalletAccountByIdQuery request, CancellationToken cancellationToken)
         {
             var walletAccount = await _unitOfWork.WalletAccounts.GetByIdAsync(request.Id, cancellationToken);
-            return _mapper.Map<WalletAccountResponseDto>(walletAccount);
+            return _mapper.Map<WalletAccountResponseDto>(walletAccount) ?? throw new NotFoundException("Wallet Account", request.Id);
         }
     }
 }

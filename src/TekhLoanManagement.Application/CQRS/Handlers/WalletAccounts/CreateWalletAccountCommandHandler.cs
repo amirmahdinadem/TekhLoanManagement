@@ -25,26 +25,17 @@ namespace TekhLoanManagement.Application.CQRS.Handlers.WalletAccounts
 
         public async Task<WalletAccountResponseDto> Handle(CreateWalletAccountCommand request, CancellationToken cancellationToken)
         {
-            var walletAccount = _mapper.Map<WalletAccount>(request);
+            var walletAccountNumber = await _numberGenerator.GenerateAccountNumberAsync();
 
-            walletAccount.WalletAccountNumber = await _numberGenerator.GenerateAccountNumberAsync();
+            var walletAccount = WalletAccount.Create(
+                walletAccountNumber,
+                request.Type,
+                request.UserId);
+
             await _unitOfWork.WalletAccounts.AddAsync(walletAccount, cancellationToken);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
             return _mapper.Map<WalletAccountResponseDto>(walletAccount);
-
-        }
-    }
-
-    public class CreateTransactionRequestDtoValidator : AbstractValidator<CreateTransactionCommand>
-    {
-        public CreateTransactionRequestDtoValidator()
-        {
-            RuleFor(x => x.DebitWalletAccountId)
-       .NotEmpty();
-
-            RuleFor(x => x.CreditWalletAccountId)
-       .NotEmpty();
 
         }
     }

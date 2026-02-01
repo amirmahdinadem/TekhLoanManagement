@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using TekhLoanManagement.Application.CQRS.Commands.WalletAccounts;
+using TekhLoanManagement.Application.DTOs.Requests.WalletAccounts;
 using TekhLoanManagement.Application.DTOs.Responses.WalletAccounts;
 using TekhLoanManagement.Domain.Entities;
 
@@ -9,12 +10,11 @@ namespace TekhLoanManagement.Application.Mappings
     {
         public WalletAccountProfile()
         {
-            CreateMap<WalletAccount, WalletAccountResponseDto>();
+            CreateMap<WalletAccount, WalletAccountResponseDto>()
+                 .ForMember("OwnerId", opt => opt.MapFrom((src, dest) => src.GetOwnerId()));
 
-
-            CreateMap<CreateWalletAccountCommand, WalletAccount>();
-            CreateMap<UpdateWalletAccountCommand, WalletAccount>()
-                .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
+            CreateMap<CreateWalletAccountRequestDto, CreateWalletAccountCommand>();
+            CreateMap<UpdateWalletAccountRequestDto, UpdateWalletAccountCommand>();
         }
     }
 }

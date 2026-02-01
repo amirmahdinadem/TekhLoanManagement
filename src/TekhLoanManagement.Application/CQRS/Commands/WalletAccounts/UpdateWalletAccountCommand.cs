@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using TekhLoanManagement.Application.CQRS.Interfaces;
+﻿using TekhLoanManagement.Application.CQRS.Interfaces;
 using TekhLoanManagement.Domain.Enums;
 
 namespace TekhLoanManagement.Application.CQRS.Commands.WalletAccounts
@@ -10,5 +7,6 @@ namespace TekhLoanManagement.Application.CQRS.Commands.WalletAccounts
     {
         public Guid Id { get; set; }
         public WalletAccountStatus Status { get; set; }
+        public Guid UserId { get; set; }
     }
 }

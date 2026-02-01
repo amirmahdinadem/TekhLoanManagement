@@ -7,31 +7,26 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="CQRS\Behaviors\" />
     <Folder Include="CQRS\Commands\Funds\" />
     <Folder Include="CQRS\Commands\Installments\" />
-    <Folder Include="CQRS\Commands\Loans\" />
-    <Folder Include="CQRS\Commands\Members\" />
     <Folder Include="CQRS\Commands\Lotteries\" />
+    <Folder Include="CQRS\Commands\Members\" />
     <Folder Include="CQRS\Handlers\Funds\" />
     <Folder Include="CQRS\Handlers\Installments\" />
-    <Folder Include="CQRS\Handlers\Loans\" />
     <Folder Include="CQRS\Handlers\Lotteries\" />
     <Folder Include="CQRS\Handlers\Members\" />
     <Folder Include="CQRS\Queries\Funds\" />
+    <Folder Include="CQRS\Queries\Installments\" />
     <Folder Include="CQRS\Queries\Lotteries\" />
+    <Folder Include="CQRS\Queries\Members\" />
     <Folder Include="DTOs\Requests\Funds\" />
     <Folder Include="DTOs\Requests\Installments\" />
     <Folder Include="DTOs\Requests\Loans\" />
     <Folder Include="DTOs\Requests\Lotteries\" />
     <Folder Include="DTOs\Requests\Members\" />
-    <Folder Include="DTOs\Requests\Transactions\" />
-    <Folder Include="DTOs\Requests\WalletAccounts\" />
     <Folder Include="DTOs\Responses\Funds\" />
-    <Folder Include="DTOs\Responses\Installments\" />
-    <Folder Include="DTOs\Responses\Loans\" />
     <Folder Include="DTOs\Responses\Lotteries\" />
-    <Folder Include="Services\" />
+    <Folder Include="DTOs\Responses\Members\" />
   </ItemGroup>
 
   <ItemGroup>
