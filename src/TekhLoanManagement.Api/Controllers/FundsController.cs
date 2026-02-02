@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TekhLoanManagement.Application.CQRS.Commands.Funds;
 using TekhLoanManagement.Application.CQRS.Queries.Funds;
@@ -23,6 +24,7 @@ namespace TekhLoanManagement.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<FundDto>>> GetFunds(
             CancellationToken cancellationToken)
         {
@@ -34,6 +36,7 @@ namespace TekhLoanManagement.Api.Controllers
         }
 
         [HttpGet("CalculateSeedMoney")]
+        [Authorize]
         public async Task<ActionResult<decimal>> GetFundSeedMoney ([FromQuery] CalculateSeedMoneyQuery query,
         CancellationToken cancellationToken)
         {
@@ -43,6 +46,7 @@ namespace TekhLoanManagement.Api.Controllers
         }
 
         [HttpGet ("GetMembersByFund")]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<MemberResponseDto>>> GetMembersByFund(
             [FromQuery] GetMembersByFundQuery query ,
             CancellationToken cancellationToken)
@@ -53,6 +57,7 @@ namespace TekhLoanManagement.Api.Controllers
 
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<FundDto>> GetFunds(
             Guid id,
             CancellationToken cancellationToken)
@@ -67,7 +72,7 @@ namespace TekhLoanManagement.Api.Controllers
             return Ok(fund);
         }
         [HttpPost]
-
+        [Authorize]
         public async Task<ActionResult<Guid>> PostFunds(
            CreateFundCommand command,
        CancellationToken cancellationToken)
@@ -78,6 +83,7 @@ namespace TekhLoanManagement.Api.Controllers
         }
 
         [HttpPost("{fundId}/members")]
+        [Authorize]
         public async Task<IActionResult> AddMember(
             Guid fundId,
             [FromBody] Guid memberId,
