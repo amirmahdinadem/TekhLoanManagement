@@ -10,7 +10,6 @@
     <Folder Include="CQRS\Behaviors\" />
     <Folder Include="CQRS\Commands\Funds\" />
     <Folder Include="CQRS\Commands\Installments\" />
-    <Folder Include="CQRS\Commands\Loans\" />
     <Folder Include="CQRS\Commands\Members\" />
     <Folder Include="CQRS\Handlers\Funds\" />
     <Folder Include="CQRS\Handlers\Members\" />

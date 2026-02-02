@@ -14,7 +14,7 @@ using TekhLoanManagement.Domain.Entities;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 
-public class CreateLoanCommandHandler : ICommandHandler<CreateLoanCommand, LoanDto>
+public class CreateLoanCommandHandler : ICommandHandler<CreateLoanCommand, LoanDto?>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -24,14 +24,20 @@ public class CreateLoanCommandHandler : ICommandHandler<CreateLoanCommand, LoanD
         _mapper = mapper;
     }
 
-    public async Task<LoanDto> Handle(CreateLoanCommand request, CancellationToken cancellationToken)
+    public async Task<LoanDto?> Handle(CreateLoanCommand request, CancellationToken cancellationToken)
     {
-
-        var loan = new Loan(request.FundId, request.Amount, request.InstallmentCount, request.StartMonth, request.StartYear);
         var fund = await _unitOfWork.Funds.GetByIdAsync(request.FundId, cancellationToken);
-        loan.CreateLoanInstallment(fund.ProfitRate);
-        var lottery = await _unitOfWork.Lotteries.AddAsync(loan.CreateLottery(), cancellationToken);
-        loan.LotteryId = lottery.Id;
+        if (fund == null)
+            return null;
+
+        var loan = new Loan(fund.Id, fund.MonthlyPaymentAmount, fund.NumberOfInstallments, request.StartMonth, request.StartYear, fund.ProfitRate);
+        loan.CreateLoanInstallment();
+        loan.CreateLottery();
+        //var loan = new Loan(request.FundId, request.Amount, request.InstallmentCount, request.StartMonth, request.StartYear);
+        //var fund = await _unitOfWork.Funds.GetByIdAsync(request.FundId, cancellationToken);
+        //loan.CreateLoanInstallment(fund.ProfitRate);
+        //var lottery = await _unitOfWork.Lotteries.AddAsync(loan.CreateLottery(), cancellationToken);
+        //loan.LotteryId = lottery.Id;
         //var a = await _unitOfWork.Loans.QueryAsync(
         //    include: x => x.Include(x => x.Fund),
         //    predicate: x => x.StartDate > DateOnly.FromDateTime(DateTime.Now) && x.Amount < 1000_000,
@@ -51,6 +57,7 @@ public class CreateLoanCommandHandler : ICommandHandler<CreateLoanCommand, LoanD
             await _unitOfWork.Installments.AddAsync(item, cancellationToken);
         }
         await _unitOfWork.Loans.AddAsync(loan, cancellationToken);
+        await _unitOfWork.Lotteries.AddAsync(loan.Lottery, cancellationToken);
         await _unitOfWork.SaveChangesAsync();
         return _mapper.Map<LoanDto>(loan);
 

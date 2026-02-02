@@ -7,6 +7,6 @@ using TekhLoanManagement.Application.DTOs.Responses.Loans;
 
 namespace TekhLoanManagement.Application.CQRS.Commands.Loans.Create
 {
-    public record CreateLoanCommand(Guid FundId, decimal Amount, int InstallmentCount , int StartMonth, int StartYear) : ICommand<LoanDto> { } 
+    public record CreateLoanCommand(Guid FundId, int StartMonth, int StartYear) : ICommand<LoanDto> { } 
     
 }
