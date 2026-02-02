@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using TekhLoanManagement.Application.CQRS.Commands.Funds;
 using TekhLoanManagement.Application.CQRS.Queries.Funds;
 using TekhLoanManagement.Application.DTOs.Responses.Funds;
+using TekhLoanManagement.Application.DTOs.Responses.Members;
 
 namespace TekhLoanManagement.Api.Controllers
 {
@@ -37,6 +38,15 @@ namespace TekhLoanManagement.Api.Controllers
             var seedmoney = await _mediator.Send( query, cancellationToken);
 
             return Ok(seedmoney);
+        }
+
+        [HttpGet ("GetMembersByFund")]
+        public async Task<ActionResult<IEnumerable<MemberResponseDto>>> GetMembersByFund(
+            [FromQuery] GetMembersByFundQuery query ,
+            CancellationToken cancellationToken)
+        {
+            var memberList = await _mediator.Send(query,cancellationToken);    
+            return Ok(memberList);  
         }
 
 

@@ -15,8 +15,18 @@ namespace TekhLoanManagement.Domain.Entities
                     Guid walletAccountId
             , WalletAccount walletAccount)
         {
-            MonthlyPaymentAmount = monthlyPaymentAmount;    
-            NumberOfInstallments = numberOfInstallments;    
+            if (monthlyPaymentAmount < 0) {
+                throw new DomainException("incorrect MonthlyPayment");
+            }
+            MonthlyPaymentAmount = monthlyPaymentAmount;
+            if (numberOfInstallments < 0) {
+                throw new DomainException("incorrect Instalment Count");
+
+            }
+            NumberOfInstallments = numberOfInstallments;
+            if (profitRate < 0|| profitRate > 2) { 
+                throw new DomainException("incorrect ProfitRate");
+            }
             ProfitRate = profitRate;    
             WalletAccountId = walletAccountId;
             WalletAccount = walletAccount;
@@ -74,6 +84,10 @@ namespace TekhLoanManagement.Domain.Entities
                 IsActive = false;
                 EndDate = DateOnly.FromDateTime(DateTime.Now);
             }
+        }
+        public decimal FrozenCalculator()
+        {
+            return ((MonthlyPaymentAmount  / NumberOfInstallments) * (decimal)ProfitRate)*3;
         }
 
 
