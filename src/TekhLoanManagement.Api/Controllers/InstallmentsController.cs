@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using TekhLoanManagement.Application.CQRS.Commands.Installments.Payment;
 using TekhLoanManagement.Application.CQRS.Queries.Installments.GetById;
 using TekhLoanManagement.Application.CQRS.Queries.Installments.GetByLoanId;
 using TekhLoanManagement.Application.CQRS.Queries.Installments.GetByMemberId;
@@ -27,7 +26,7 @@ namespace TekhLoanManagement.Api.Controllers
             var installmens = await _mediator.Send(new GetByLoanIdInstallmentsQuery(loanId));
             return Ok(installmens);
         }
-        [HttpGet("{memberId}")]
+        [HttpGet("{memberId}/member")]
         public async Task<ActionResult<IEnumerable<InstallmentDto>>> GetByMemeber(Guid memberId)
         {
             var installmens = await _mediator.Send(new GetByMemberIdInstallmentQuery(memberId));

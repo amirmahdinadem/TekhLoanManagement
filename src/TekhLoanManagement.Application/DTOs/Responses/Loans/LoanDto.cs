@@ -7,6 +7,7 @@
         public Guid? MemberId { get; set; }
         public decimal Amount { get; set; }
         public int InstallmentCount { get; set; }
+        public Guid? FundId { get; set; }
     }
 
 

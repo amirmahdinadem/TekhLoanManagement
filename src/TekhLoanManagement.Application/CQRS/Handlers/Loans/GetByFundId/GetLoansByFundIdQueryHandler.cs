@@ -5,10 +5,11 @@ using Microsoft.EntityFrameworkCore;
 using TekhLoanManagement.Application.CQRS.Interfaces;
 using TekhLoanManagement.Application.CQRS.Queries.Loans.GetLoaosByFundId;
 using TekhLoanManagement.Application.DTOs.Responses.Loans;
+using TekhLoanManagement.Application.Exceptions;
 using TekhLoanManagement.Application.Interfaces;
 using TekhLoanManagement.Domain.Entities;
 
-public class GetLoansByFundIdQueryHandler : IQueryHandler<GetLoansByFundIdQuery, List<LoanDto?>>
+public class GetLoansByFundIdQueryHandler : IQueryHandler<GetLoansByFundIdQuery, List<LoanDto>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -19,15 +20,17 @@ public class GetLoansByFundIdQueryHandler : IQueryHandler<GetLoansByFundIdQuery,
         _mapper = mapper;
     }
 
-    public async Task<List<LoanDto?>> Handle(GetLoansByFundIdQuery request, CancellationToken cancellationToken)
+    public async Task<List<LoanDto>> Handle(GetLoansByFundIdQuery request, CancellationToken cancellationToken)
     {
         var loans = await _unitOfWork.Loans.QueryAsync<Loan>(
             predicate: x => x.FundId == request.FundId,
             include: x => x.Include(x => x.Installments).Include(x => x.Lottery).Include(x => x.Member),
-            asNoTracking: false
-
+            asNoTracking: false,
+             selector: x => x
             );
-        var result = loans.Where(x => x.FundId == request.FundId);
-        return _mapper.Map<List<LoanDto?>>(result);
+        var result = loans.Where(x => x.FundId == request.FundId).ToList();
+        if (result == null)
+            throw new NotFoundException("Loan Not Found");
+        return _mapper.Map<List<LoanDto>>(result);
     }
 }

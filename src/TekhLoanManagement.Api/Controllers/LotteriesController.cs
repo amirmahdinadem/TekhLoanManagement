@@ -18,9 +18,9 @@ namespace TekhLoanManagement.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddMember(AddLotteryMemberCommand addLotteryMemberCommand)
+        public async Task<ActionResult> AddMember([FromBody]AddLotteryMemberCommand command)
         {
-            await _mediator.Send(addLotteryMemberCommand);
+            await _mediator.Send(command);
             return Ok();
         }
         [HttpPut("{lotteryId}/Celebration")]

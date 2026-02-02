@@ -21,7 +21,8 @@ namespace TekhLoanManagement.Application.CQRS.Handlers.Lotteries.Celebrate
             var lotteries = await _unitOfWork.Lotteries.QueryAsync<Lottery>(
                 predicate: x => x.Id == request.LotteryId,
                 include: x => x.Include(x => x.Loan).ThenInclude(x => x.Member).Include(x => x.Members),
-                asNoTracking: false
+                asNoTracking: false,
+                selector: x => x
                 );
             var lottery = lotteries.FirstOrDefault();
             if (lottery == null)

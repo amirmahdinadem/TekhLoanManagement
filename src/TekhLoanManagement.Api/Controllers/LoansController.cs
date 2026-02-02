@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Runtime.CompilerServices;
 using TekhLoanManagement.Application.CQRS.Commands.Loans.Create;
-using TekhLoanManagement.Application.CQRS.Commands.Loans.CreateLottery;
 using TekhLoanManagement.Application.CQRS.Queries.Loans.GetAll;
 using TekhLoanManagement.Application.CQRS.Queries.Loans.GetLoan;
 using TekhLoanManagement.Application.CQRS.Queries.Loans.GetLoaosByFundId;
@@ -44,11 +43,11 @@ namespace TekhLoanManagement.Api.Controllers
                 return NotFound();
             return Ok(loan);
         }
-        [HttpGet("{fundId}")]
+        [HttpGet("Fund/{fundId}")]
         public async Task<ActionResult> GetLoanByFundId(Guid fundId)
         {
-            await _mediator.Send(new GetLoansByFundIdQuery(fundId));
-            return Ok();
+            var result = await _mediator.Send(new GetLoansByFundIdQuery(fundId));
+            return Ok(result);
         }
     }
 }
