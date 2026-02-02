@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TekhLoanManagement.Infrastructure.Context;
 
@@ -11,9 +12,11 @@ using TekhLoanManagement.Infrastructure.Context;
 namespace TekhLoanManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(TekhLoanDbContext))]
-    partial class TekhLoanDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260202103423_EhsanFix2")]
+    partial class EhsanFix2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
