@@ -23,7 +23,6 @@
     <Folder Include="DTOs\Requests\Installments\" />
     <Folder Include="DTOs\Requests\Loans\" />
     <Folder Include="DTOs\Requests\Lotteries\" />
-    <Folder Include="DTOs\Requests\Members\" />
     <Folder Include="DTOs\Responses\Funds\" />
     <Folder Include="DTOs\Responses\Lotteries\" />
     <Folder Include="DTOs\Responses\Members\" />

@@ -14,6 +14,7 @@ namespace TekhLoanManagement.Api.Extensions.ServiceCollection
 
             services.AddScoped<ITransactionService, TransactionService>();
             services.AddScoped<IWalletAccountService, WalletAccountService>();
+            services.AddScoped<IMemberService, MemberService>();
 
             return services;
         }
