@@ -2,8 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using TekhLoanManagement.Application.Interfaces;
 using TekhLoanManagement.Domain.Entities;
+using TekhLoanManagement.Infrastructure.Audit;
 using TekhLoanManagement.Infrastructure.Context;
 using TekhLoanManagement.Infrastructure.Generators;
+using TekhLoanManagement.Infrastructure.Idempotency;
+using TekhLoanManagement.Infrastructure.Logging;
 using TekhLoanManagement.Infrastructure.Repositories;
 using TekhLoanManagement.Infrastructure.UnitOfWork;
 
@@ -30,6 +33,9 @@ namespace TekhLoanManagement.Api.Extensions.ServiceCollection
             services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<INumberGenerator, AccountNumberGenerator>();
+            services.AddScoped<IIdempotencyService, IdempotencyService>();
+            services.AddScoped<IAuditLogService, AuditLogService>();
+            services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
 
             return services;
         }

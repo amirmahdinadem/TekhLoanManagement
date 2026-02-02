@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using TekhLoanManagement.Application.CQRS.Commands.Transactions;
+using TekhLoanManagement.Application.DTOs.Requests.Transactions;
 using TekhLoanManagement.Application.DTOs.Responses.Transactions;
 using TekhLoanManagement.Domain.Entities;
 
@@ -14,7 +15,7 @@ namespace TekhLoanManagement.Application.Mappings
         {
             CreateMap<Transaction, TransactionResponseDto>();
 
-            CreateMap<CreateTransactionCommand, Transaction>();
+            CreateMap<CreateTransactionRequestDto, CreateTransactionCommand>();
         }
     }
 }
