@@ -1,8 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using TekhLoanManagement.Application.CQRS.Commands.Transactions;
 using TekhLoanManagement.Application.CQRS.Interfaces;
 using TekhLoanManagement.Application.DTOs.Responses.Transactions;
@@ -16,11 +12,13 @@ namespace TekhLoanManagement.Application.CQRS.Handlers.Transactions
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IIdempotencyService _idempotencyService;
 
-        public CreateTransactionCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public CreateTransactionCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IIdempotencyService idempotencyService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _idempotencyService = idempotencyService;
         }
 
         public async Task<TransactionResponseDto> Handle(CreateTransactionCommand request, CancellationToken cancellationToken)
@@ -28,6 +26,12 @@ namespace TekhLoanManagement.Application.CQRS.Handlers.Transactions
 
             if (request.DebitWalletAccountId == request.CreditWalletAccountId)
                 throw new ConflictException("The parties to the transaction are the same.");
+
+            var previousResult = await _idempotencyService.GetResultAsync(request.IdempotencyKey, request.UserId);
+            if (previousResult != null)
+            {
+                throw new ConflictException(previousResult);
+            }
 
             await _unitOfWork.BeginTransactionAsync();
 
@@ -39,7 +43,15 @@ namespace TekhLoanManagement.Application.CQRS.Handlers.Transactions
                 from.Debit(request.Amount);
                 to.Credit(request.Amount);
 
-                var transaction = _mapper.Map<Transaction>(request);
+                var transaction = Transaction.Create(
+                    request.DebitWalletAccountId,
+                    request.CreditWalletAccountId,
+                    request.Amount,
+                    request.Description,
+                    request.Type,
+                    request.IdempotencyKey,
+                    request.UserId);
+
                 await _unitOfWork.Transactions.AddAsync(transaction, cancellationToken);
 
                 if (request.InstallmentId is not null)
@@ -50,6 +62,7 @@ namespace TekhLoanManagement.Application.CQRS.Handlers.Transactions
 
                     installment.Payment(transaction.Id);
                 }
+
                 await _unitOfWork.CommitAsync();
                 return _mapper.Map<TransactionResponseDto>(transaction);
             }

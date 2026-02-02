@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using MediatR;
 using System.Reflection;
+using TekhLoanManagement.Application.CQRS.Behaviors;
 
 namespace TekhLoanManagement.Api.Extensions.ServiceCollection
 {
@@ -10,6 +11,7 @@ namespace TekhLoanManagement.Api.Extensions.ServiceCollection
             this IServiceCollection services)
         {
             services.AddValidatorsFromAssembly(Assembly.Load("TekhLoanManagement.Application"));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             return services;
         }
     }
