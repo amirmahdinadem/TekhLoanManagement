@@ -1,9 +1,13 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TekhLoanManagement.Application.CQRS.Commands.Members;
 using TekhLoanManagement.Application.CQRS.Queries.Members;
+using TekhLoanManagement.Application.DTOs.Requests.Members;
 using TekhLoanManagement.Application.DTOs.Responses.Members;
+using TekhLoanManagement.Application.Interfaces;
+using TekhLoanManagement.Application.Services;
 
 namespace TekhLoanManagement.Api.Controllers
 {
@@ -11,29 +15,33 @@ namespace TekhLoanManagement.Api.Controllers
     [ApiController]
     public class MembersController : ControllerBase
     {
+        private readonly IMemberService _memberService;
         private readonly IMediator _mediator;
-        public MembersController(IMediator mediator)
+
+        public MembersController(IMemberService memberService, IMediator mediator)
         {
+            _memberService = memberService;
             _mediator = mediator;
         }
+
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MemberResponseDto>>>GetMembers(CancellationToken cancellationToken)
+        public async Task<ActionResult<IEnumerable<MemberResponseDto>>> GetMembers(CancellationToken cancellationToken)
         {
             var members = await _mediator.Send(new GetAllMembersQuery());
             return Ok(members);
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<MemberResponseDto>>GetMembers(Guid id,CancellationToken cancellationToken)
+        public async Task<ActionResult<MemberResponseDto>> GetMembers(Guid id, CancellationToken cancellationToken)
         {
-            var member= await _mediator.Send(new GetMemberByIdQuery { Id = id});
-            if(member == null)
+            var member = await _mediator.Send(new GetMemberByIdQuery { Id = id });
+            if (member == null)
             {
                 return NotFound();
             }
             return Ok(member);
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMembers(Guid id, UpdateMemberCommand command, CancellationToken cancellationToken) 
+        public async Task<IActionResult> PutMembers(Guid id, UpdateMemberCommand command, CancellationToken cancellationToken)
         {
             if (id != command.Id)
             {
@@ -43,21 +51,22 @@ namespace TekhLoanManagement.Api.Controllers
             return NoContent();
         }
         [HttpPost]
-        public async Task<ActionResult<MemberResponseDto>> PostMembers(CreateMemberCommand command,CancellationToken cancellationToken)
+        [Authorize]
+        public async Task<ActionResult<MemberResponseDto>> PostMembers(CreateMemberRequestDto dto, CancellationToken cancellationToken)
         {
-            var member=await _mediator.Send(command);
-            return CreatedAtAction("GetMembers",new {id=member.Id},member);
+            var member = await _memberService.CreateAsync(dto, User, cancellationToken);
+            return CreatedAtAction("GetMembers", new { id = member.Id }, member);
 
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMembers(Guid id, CancellationToken cancellationToken)
         {
             var member = await _mediator.Send(new GetMemberByIdQuery { Id = id });
-            if(member == null)
+            if (member == null)
             {
                 return NotFound();
             }
-            await _mediator.Send(new DeleteMemberCommand { Id = id});
+            await _mediator.Send(new DeleteMemberCommand { Id = id });
             return NoContent();
         }
 

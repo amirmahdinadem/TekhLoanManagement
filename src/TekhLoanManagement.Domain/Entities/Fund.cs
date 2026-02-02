@@ -99,6 +99,6 @@ namespace TekhLoanManagement.Domain.Entities
 
        
 
-        
+
     }
 }

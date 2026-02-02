@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using TekhLoanManagement.Application.CQRS.Commands.Loans.Create;
 using TekhLoanManagement.Application.CQRS.Queries.Loans.GetAll;
 using TekhLoanManagement.Application.CQRS.Queries.Loans.GetLoan;
+using TekhLoanManagement.Application.CQRS.Queries.Loans.GetLoaosByFundId;
 using TekhLoanManagement.Application.DTOs.Responses.Loans;
 
 namespace TekhLoanManagement.Api.Controllers
@@ -27,6 +28,7 @@ namespace TekhLoanManagement.Api.Controllers
             var loan = await _mediator.Send(createLoanCommand);
             return CreatedAtAction("GetLoan", new { Id = loan.Id }, loan);
         }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<LoanDto>>> GetLoans()
         {
@@ -40,6 +42,12 @@ namespace TekhLoanManagement.Api.Controllers
             if (loan == null)
                 return NotFound();
             return Ok(loan);
+        }
+        [HttpGet("Fund/{fundId}")]
+        public async Task<ActionResult> GetLoanByFundId(Guid fundId)
+        {
+            var result = await _mediator.Send(new GetLoansByFundIdQuery(fundId));
+            return Ok(result);
         }
     }
 }

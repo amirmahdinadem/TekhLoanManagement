@@ -8,8 +8,15 @@ using TekhLoanManagement.Domain.Enums;
 
 namespace TekhLoanManagement.Application.CQRS.Commands.Members
 {
-    public record CreateMemberCommand : ICommand<MemberResponseDto>
+    public record CreateMemberCommand
+        (string firstName,
+        string lastName,
+        DateOnly birthdate
+
+
+        )
+        : ICommand<MemberResponseDto>
     {
-       
+        public Guid userId { get; set; }
     }
 }
