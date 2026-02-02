@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using TekhLoanManagement.Application.CQRS.Commands.WalletAccounts;
 using TekhLoanManagement.Application.CQRS.Interfaces;
 using TekhLoanManagement.Application.Exceptions;
@@ -11,12 +12,10 @@ namespace TekhLoanManagement.Application.CQRS.Handlers.WalletAccounts
     public class UpdateWalletAccountCommandHandler : ICommandHandler<UpdateWalletAccountCommand>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
 
-        public UpdateWalletAccountCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public UpdateWalletAccountCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
 
         public async Task Handle(UpdateWalletAccountCommand request, CancellationToken cancellationToken)
@@ -24,9 +23,9 @@ namespace TekhLoanManagement.Application.CQRS.Handlers.WalletAccounts
             var walletAccount = await _unitOfWork.WalletAccounts.GetByIdAsync(request.Id, cancellationToken);
             if (walletAccount == null) throw new NotFoundException("");
 
-            _mapper.Map(request, walletAccount);
+            var oldValue = JsonSerializer.Serialize(walletAccount);
 
-            _unitOfWork.WalletAccounts.Update(walletAccount);
+            walletAccount.ChangeStatus(request.Status, request.UserId, oldValue);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
         }

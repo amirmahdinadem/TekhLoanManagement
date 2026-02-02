@@ -1,74 +1,120 @@
-﻿using MediatR;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TekhLoanManagement.Application.CQRS.Commands.WalletAccounts;
-using TekhLoanManagement.Application.CQRS.Queries.WalletAccounts;
+using Swashbuckle.AspNetCore.Annotations;
+using TekhLoanManagement.Application.DTOs.Requests.WalletAccounts;
+using TekhLoanManagement.Application.DTOs.Responses.Transactions;
 using TekhLoanManagement.Application.DTOs.Responses.WalletAccounts;
+using TekhLoanManagement.Application.Interfaces;
 
 namespace TekhLoanManagement.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[Authorize(Policy = "Accessibility")]
+    [Authorize]
     public class WalletAccountsController : ControllerBase
     {
-        private readonly IMediator _mediator;
+        private readonly IWalletAccountService _walletAccountService;
 
-        public WalletAccountsController(IMediator mediator)
+        public WalletAccountsController(IWalletAccountService walletAccountService)
         {
-            _mediator = mediator;
+            _walletAccountService = walletAccountService;
         }
 
+        // GET: api/WalletAccounts
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<WalletAccountResponseDto>>> GetWalletAccounts(CancellationToken cancellationToken)
+        [SwaggerOperation(Summary = "Get All Wallet Accounts")]
+        public async Task<ActionResult<IEnumerable<WalletAccountResponseDto>>> GetWalletAccounts(CancellationToken cancellationToken, int limit = 25, int offset = 0)
         {
-            var walletAccounts = await _mediator.Send(new GetAllWalletAccountsQuery());
+            var walletAccounts = await _walletAccountService.GetAllAsync(limit, offset, cancellationToken);
             return Ok(walletAccounts);
         }
 
+        // GET: api/WalletAccounts/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<WalletAccountResponseDto>> GetWalletAccounts(Guid id, CancellationToken cancellationToken)
+        [SwaggerOperation(Summary = "Get a Wallet Accounts By ID")]
+        public async Task<ActionResult<WalletAccountResponseDto>> GetWalletAccount(Guid id, CancellationToken cancellationToken)
         {
-            var walltAccount = await _mediator.Send(new GetWalletAccountByIdQuery { Id = id });
+            var walletAccount = await _walletAccountService.GetByIdAsync(id, cancellationToken);
 
 
-            if (walltAccount == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(walltAccount);
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutWalletAccounts(Guid id, UpdateWalletAccountCommand command, CancellationToken cancellationToken)
-        {
-            if (id != command.Id)
-            {
-                return BadRequest();
-            }
-
-            await _mediator.Send(command);
-
-            return NoContent();
-        }
-
-        [HttpPost]
-        public async Task<ActionResult<WalletAccountResponseDto>> PostWalletAccounts(CreateWalletAccountCommand command, CancellationToken cancellationToken)
-        {
-            var account = await _mediator.Send(command);
-
-            return CreatedAtAction("GetWalletAccounts", new { id = account.Id }, account);
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteWalletAccounts(Guid id, CancellationToken cancellationToken)
-        {
-            var walletAccount = await _mediator.Send(new GetWalletAccountByIdQuery { Id = id });
             if (walletAccount == null)
             {
                 return NotFound();
             }
 
-            await _mediator.Send(new DeleteWalletAccountCommand { Id = id });
+            return Ok(walletAccount);
+        }
+
+        // GET: api/WalletAccounts/5/DebitTransactions
+        [HttpGet("{id}/DebitTransactions")]
+        [SwaggerOperation(Summary = "Get a Wallet Accounts Debit Transactions By Id")]
+        public async Task<ActionResult<IEnumerable<TransactionResponseDto>>> GetWalletAccountDebitTransactions(Guid id, CancellationToken cancellationToken)
+        {
+            var walletAccount = await _walletAccountService.GetByIdAsync(id, cancellationToken);
+
+
+            if (walletAccount == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(await _walletAccountService.GetDebitTransactionsAsync(id, cancellationToken));
+        }
+
+        // GET: api/WalletAccounts/5/CreditTransactions
+        [HttpGet("{id}/CreditTransactions")]
+        [SwaggerOperation(Summary = "Get a Wallet Accounts Credit Transactions By Id")]
+        public async Task<ActionResult<IEnumerable<TransactionResponseDto>>> GetWalletAccountCreditTransactions(Guid id, CancellationToken cancellationToken)
+        {
+            var walletAccount = await _walletAccountService.GetByIdAsync(id, cancellationToken);
+
+
+            if (walletAccount == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(await _walletAccountService.GetCreditTransactionsAsync(id, cancellationToken));
+        }
+
+        // PUT: api/WalletAccounts/5
+        [HttpPut("{id}")]
+        [SwaggerOperation(Summary = "Edit a Wallet Accounts By Id")]
+        public async Task<IActionResult> PutWalletAccount(Guid id, UpdateWalletAccountRequestDto dto, CancellationToken cancellationToken)
+        {
+            if (id != dto.Id)
+            {
+                return BadRequest();
+            }
+
+            await _walletAccountService.UpdateAsync(dto, User, cancellationToken);
+
+            return NoContent();
+        }
+
+        // POST: api/WalletAccounts
+        [HttpPost]
+        [SwaggerOperation(Summary = "Create a Wallet Accounts")]
+        public async Task<ActionResult<WalletAccountResponseDto>> PostWalletAccount(CreateWalletAccountRequestDto dto, CancellationToken cancellationToken)
+        {
+            var walletAccount = await _walletAccountService.CreateAsync(dto, User, cancellationToken);
+
+            return CreatedAtAction("GetWalletAccount", new { id = walletAccount.Id }, walletAccount);
+        }
+
+        // DELETE: api/WalletAccounts/5
+        [HttpDelete("{id}")]
+        [SwaggerOperation(Summary = "Delete a Wallet Accounts By Id")]
+        public async Task<IActionResult> DeleteWalletAccount(Guid id, CancellationToken cancellationToken)
+        {
+            var walletAccount = await _walletAccountService.GetByIdAsync(id, cancellationToken);
+            if (walletAccount == null)
+            {
+                return NotFound();
+            }
+
+            await _walletAccountService.DeleteAsync(id, User, cancellationToken);
 
             return NoContent();
         }

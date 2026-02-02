@@ -11,5 +11,7 @@ namespace TekhLoanManagement.Application.DTOs.Responses.WalletAccounts
         public string WalletAccountNumber { get; set; }
         public decimal Balance { get; set; }
         public WalletAccountStatus Status { get; set; }
+        public WalletAccountType Type { get; set; }
+        public Guid? OwnerId { get; set; }
     }
 }

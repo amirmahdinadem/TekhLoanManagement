@@ -1,7 +1,17 @@
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Serilog;
 using TekhLoanManagement.Api.Extensions.ApplicationBuilder;
 using TekhLoanManagement.Api.Extensions.ServiceCollection;
+using TekhLoanManagement.Api.HealthChecks;
+
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    //.WriteTo.File("logs/api-log.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog();
 
 // Add services to the container.
 
@@ -16,9 +26,12 @@ builder.Services
     .AddValidation()
     .AddInfrastructure(builder.Configuration)
     .AddApplicationServices()
+    .AddCustomCors(builder.Configuration)
     .AddJwtAuthentication(builder.Configuration)
     .AddAuthorizationPolicies()
-    .AddSwaggerDocumentation();
+    .AddSwaggerDocumentation()
+    .AddRateLimiting(builder.Configuration)
+    .AddCustomHealthChecks(builder.Configuration);
 
 
 var app = builder.Build();
@@ -35,9 +48,29 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors("DevCors");
+app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseRateLimiter();
 app.MapControllers();
+
+app.MapHealthChecks("/health",
+     new HealthCheckOptions
+     {
+         ResponseWriter = HealthCheckResponses.WriteResponse
+     });
+
+app.MapHealthChecks("/health/ready", new HealthCheckOptions
+{
+    Predicate = healthCheck => healthCheck.Tags.Contains("ready"),
+    ResponseWriter = HealthCheckResponses.WriteResponse
+});
+
+app.MapHealthChecks("/health/live", new HealthCheckOptions
+{
+    Predicate = _ => false,
+});
+
+app.Logger.LogInformation("LAUNCHING TekhLoanManagement.Api");
 
 app.Run();

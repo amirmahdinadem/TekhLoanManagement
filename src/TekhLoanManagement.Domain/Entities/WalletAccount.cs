@@ -1,22 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Ardalis.GuardClauses;
 using TekhLoanManagement.Domain.Abstractions;
 using TekhLoanManagement.Domain.Enums;
+using TekhLoanManagement.Domain.Events.WalletAccounts;
 using TekhLoanManagement.Domain.Exceptions;
 
 namespace TekhLoanManagement.Domain.Entities
 {
     public class WalletAccount : BaseEntity<Guid> //Hesab Mali
     {
-        public string? WalletAccountNumber { get; set; }
-        public decimal Balance { get; private set; }
+        private WalletAccount(string walletAccountNumber, WalletAccountType type)
+        {
+            Guard.Against.NullOrEmpty(walletAccountNumber, nameof(walletAccountNumber));
+            Guard.Against.EnumOutOfRange(type, nameof(type));
+
+            WalletAccountNumber = walletAccountNumber;
+            Type = type;
+        }
+
+#pragma warning disable CS8618 // Required by Entity Framework
+        private WalletAccount() { }
+
+        public string WalletAccountNumber { get; private set; }
+        public WalletAccountType Type { get; private set; }
+        public decimal Balance { get; private set; } = 0;
         public WalletAccountStatus Status { get; private set; } = WalletAccountStatus.Active;
-        public WalletAccountType Type { get; set; }
+        public Member? Member { get; private set; }
+        public Fund? Fund { get; private set; }
         public ICollection<Transaction>? DebitTransactions { get; set; } = new List<Transaction>();
         public ICollection<Transaction>? CreditTransactions { get; set; } = new List<Transaction>();
-        public Member? Member { get; set; }
-        public Fund? Fund { get; set; }
 
         public void Debit(decimal amount)
         {
@@ -43,5 +54,32 @@ namespace TekhLoanManagement.Domain.Entities
             Balance += amount;
         }
 
+        public Guid? GetOwnerId()
+        {
+            if (Member is not null) return Member.Id;
+            else if (Fund is not null) return Fund.Id;
+            else return null;
+        }
+
+        public static WalletAccount Create(string walletAccountNumber, WalletAccountType type, Guid userId)
+        {
+            var walletAccount = new WalletAccount(walletAccountNumber, type);
+            walletAccount.AddDomainEvent(new WalletAccountCreatedEvent(walletAccount, userId));
+            return walletAccount;
+        }
+
+        public static WalletAccount Delete(WalletAccount walletAccount, Guid userId)
+        {
+            walletAccount.AddDomainEvent(
+                new WalletAccountDeletedEvent(walletAccount, userId)
+            );
+            return walletAccount;
+        }
+
+        public void ChangeStatus(WalletAccountStatus status, Guid userId, string oldValue)
+        {
+            Status = status;
+            AddDomainEvent(new WalletAccountUpdatedEvent(this, userId, oldValue));
+        }
     }
 }

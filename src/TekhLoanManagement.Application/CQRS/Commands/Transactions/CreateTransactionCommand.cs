@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using FluentValidation;
 using TekhLoanManagement.Application.CQRS.Interfaces;
 using TekhLoanManagement.Application.DTOs.Responses.Transactions;
 using TekhLoanManagement.Domain.Enums;
@@ -15,5 +13,20 @@ namespace TekhLoanManagement.Application.CQRS.Commands.Transactions
         public string Description { get; set; }
         public TransactionType Type { get; set; }
         public Guid? InstallmentId { get; set; } = null;
+        public Guid UserId { get; set; }
+        public string IdempotencyKey { get; set; }
+    }
+
+    public class CreateTransactionCommandValidator : AbstractValidator<CreateTransactionCommand>
+    {
+        public CreateTransactionCommandValidator()
+        {
+            RuleFor(x => x.DebitWalletAccountId)
+       .NotEmpty();
+
+            RuleFor(x => x.CreditWalletAccountId)
+       .NotEmpty();
+
+        }
     }
 }

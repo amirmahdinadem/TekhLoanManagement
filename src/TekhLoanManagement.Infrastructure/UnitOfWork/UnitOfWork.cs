@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
+﻿using MediatR;
+using Microsoft.EntityFrameworkCore.Storage;
 using TekhLoanManagement.Application.Interfaces;
 using TekhLoanManagement.Domain.Entities;
 using TekhLoanManagement.Infrastructure.Context;
+using TekhLoanManagement.Infrastructure.Extensions;
 using TekhLoanManagement.Infrastructure.Repositories;
 
 namespace TekhLoanManagement.Infrastructure.UnitOfWork
@@ -9,6 +11,7 @@ namespace TekhLoanManagement.Infrastructure.UnitOfWork
     public class UnitOfWork : IUnitOfWork
     {
         private readonly TekhLoanDbContext _context;
+        private readonly IMediator _mediator;
         private IDbContextTransaction? _transaction;
 
         public IGenericRepository<Fund, Guid> Funds { get; }
@@ -19,9 +22,10 @@ namespace TekhLoanManagement.Infrastructure.UnitOfWork
         public IGenericRepository<Transaction, Guid> Transactions { get; }
         public IGenericRepository<WalletAccount, Guid> WalletAccounts { get; }
 
-        public UnitOfWork(TekhLoanDbContext context)
+        public UnitOfWork(TekhLoanDbContext context, IMediator mediator)
         {
             _context = context;
+            _mediator = mediator;
 
             Funds = new GenericRepository<Fund, Guid>(_context);
             Installments = new GenericRepository<Installment, Guid>(_context);
@@ -52,6 +56,7 @@ namespace TekhLoanManagement.Infrastructure.UnitOfWork
         public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             await _context.SaveChangesAsync(cancellationToken);
+            await _mediator.DispatchDomainEventsAsync(_context);
         }
     }
 }
