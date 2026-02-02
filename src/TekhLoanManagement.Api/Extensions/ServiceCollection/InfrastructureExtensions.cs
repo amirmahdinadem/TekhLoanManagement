@@ -6,8 +6,10 @@ using TekhLoanManagement.Infrastructure.Audit;
 using TekhLoanManagement.Infrastructure.Context;
 using TekhLoanManagement.Infrastructure.Generators;
 using TekhLoanManagement.Infrastructure.Idempotency;
+using TekhLoanManagement.Infrastructure.Identity;
 using TekhLoanManagement.Infrastructure.Logging;
 using TekhLoanManagement.Infrastructure.Repositories;
+using TekhLoanManagement.Infrastructure.Security;
 using TekhLoanManagement.Infrastructure.UnitOfWork;
 
 namespace TekhLoanManagement.Api.Extensions.ServiceCollection
@@ -35,7 +37,11 @@ namespace TekhLoanManagement.Api.Extensions.ServiceCollection
             services.AddScoped<INumberGenerator, AccountNumberGenerator>();
             services.AddScoped<IIdempotencyService, IdempotencyService>();
             services.AddScoped<IAuditLogService, AuditLogService>();
+            services.AddScoped<IIdentityService, IdentityService>();
+            services.AddScoped<IJwtTokenService, JwtTokenService>();
+            services.AddScoped<IRefreshTokenService, RefreshTokenService>();
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
+        
 
             return services;
         }

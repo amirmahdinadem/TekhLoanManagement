@@ -21,10 +21,14 @@ namespace TekhLoanManagement.Application.CQRS.Handlers.Loans.GetAll
         public async Task<IEnumerable<LoanDto>> Handle(GetAllLoanQuery request, CancellationToken cancellationToken)
         {
             var loans = await _unitOfWork.Loans.QueryAsync<Loan>(include: x => x
-                                                                                
+
                                                                                 .Include(x => x.Installments)
                                                                                 .Include(x => x.Lottery)
-                                                                                .Include(x => x.Member));
+                                                                                .Include(x => x.Member),
+                                                                                selector: x => x
+                                                                                , asNoTracking: true
+                                                                                );
+
             return _mapper.Map<IEnumerable<LoanDto>>(loans);
 
         }

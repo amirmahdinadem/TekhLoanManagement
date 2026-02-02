@@ -24,7 +24,9 @@ namespace TekhLoanManagement.Application.CQRS.Handlers.Loans.GetById
         {
             var loans = await _unitOfWork.Loans.QueryAsync<Loan>(include: x => x.Include(x => x.Installments)
                                                                               .Include(x => x.Lottery)
-                                                                              .Include(x => x.Member));
+                                                                              .Include(x => x.Member),
+                                                                              selector: x => x
+                                                                              );
             var loan = loans.FirstOrDefault(x => x.Id == request.LoanId);
             if (loan == null)
                 throw new NotFoundException("Loan Not found");
