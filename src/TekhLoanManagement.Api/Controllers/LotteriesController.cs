@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TekhLoanManagement.Application.CQRS.Commands.Lotteries.AddMember;
+using TekhLoanManagement.Application.CQRS.Commands.Lotteries.Celebrate;
 
 namespace TekhLoanManagement.Api.Controllers
 {
@@ -17,9 +18,15 @@ namespace TekhLoanManagement.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddMember(AddLotteryMemberCommand addLotteryMemberCommand)
+        public async Task<ActionResult> AddMember([FromBody]AddLotteryMemberCommand command)
         {
-            await _mediator.Send(addLotteryMemberCommand);
+            await _mediator.Send(command);
+            return Ok();
+        }
+        [HttpPut("{lotteryId}/Celebration")]
+        public async Task<ActionResult> Celebration(Guid lotteryId)
+        {
+            await _mediator.Send(new CelebrateLotteryCommand(lotteryId));
             return Ok();
         }
     }

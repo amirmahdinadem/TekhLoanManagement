@@ -25,8 +25,7 @@ namespace TekhLoanManagement.Application.CQRS.Handlers.Installments.GetById
         {
             var installments = await _unitOfWork.Installments
                 .QueryAsync<Installment>(include: x => x.Include(x => x.Transaction)
-                                                        .Include(x => x.Loan)
-                                                        .ThenInclude(x => x.Member)
+                                                        
                                                         );
             var installment = installments.FirstOrDefault(x => x.Id == request.InstallmentId);
             if (installment == null)

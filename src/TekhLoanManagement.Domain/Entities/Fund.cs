@@ -14,16 +14,16 @@ namespace TekhLoanManagement.Domain.Entities
                     double profitRate,
                     Guid walletAccountId)
         {
-            MonthlyPaymentAmount = monthlyPaymentAmount;    
-            NumberOfInstallments = numberOfInstallments;    
-            ProfitRate = profitRate;    
-            WalletAccountId = walletAccountId;  
+            MonthlyPaymentAmount = monthlyPaymentAmount;
+            NumberOfInstallments = numberOfInstallments;
+            ProfitRate = profitRate;
+            WalletAccountId = walletAccountId;
             StartDate = DateOnly.FromDateTime(DateTime.Now);
             SeedMoney = CalculateSeedMoney(monthlyPaymentAmount,
                                             numberOfInstallments);
-            
 
-            
+
+
 
         }
         protected Fund()
@@ -40,26 +40,31 @@ namespace TekhLoanManagement.Domain.Entities
         public Guid WalletAccountId { get; private set; }
         public WalletAccount WalletAccount { get; private set; }
 
-        private List<Loan> _loans = new List<Loan>(); 
+        private List<Loan> _loans = new List<Loan>();
 
         private List<Member> _members = new List<Member>();
-        public IReadOnlyCollection<Loan>? Loans  => _loans ;
-        public IReadOnlyCollection<Member>? Members  => _members ;
+        public IReadOnlyCollection<Loan>? Loans => _loans;
+        public IReadOnlyCollection<Member>? Members => _members;
 
         private decimal CalculateSeedMoney(decimal monthlyPaymentAmount,
                                           int numberOfInstallments)
         {
-           return (monthlyPaymentAmount+
-                   (monthlyPaymentAmount/numberOfInstallments))*
-                   (numberOfInstallments/2);
+            return (monthlyPaymentAmount +
+                    (monthlyPaymentAmount / numberOfInstallments)) *
+                    (numberOfInstallments / 2);
         }
-               
+
         public void AddLoan(Loan loan) => _loans.Add(loan);
         public void AddMember(Member member) => _members.Add(member);
-        
 
-       
+        public bool CheckAmount(decimal loanAmount)
+        {
+            if (loanAmount > MonthlyPaymentAmount)
+                throw new DomainException("Loan Amount Cant Be greater Then Fund Monthly payment Amount");
+            return true;
+        }
 
-        
+
+
     }
 }
