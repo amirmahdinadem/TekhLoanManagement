@@ -22,6 +22,10 @@ namespace TekhLoanManagement.Domain.Entities
         public WalletAccount? WalletAccount { get; set; }
         public User? User { get; set; }
         public int Point { get; set; } = 1;
+        public Member()
+        {
+            JoinDate = DateTime.UtcNow;
+        }
         public void ResetPoint()
         {
             Point = 1;

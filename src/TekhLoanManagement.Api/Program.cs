@@ -3,6 +3,7 @@ using Serilog;
 using TekhLoanManagement.Api.Extensions.ApplicationBuilder;
 using TekhLoanManagement.Api.Extensions.ServiceCollection;
 using TekhLoanManagement.Api.HealthChecks;
+using TekhLoanManagement.Infrastructure.Identity;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -35,6 +36,11 @@ builder.Services
 
 
 var app = builder.Build();
+using(var scope = app.Services.CreateScope())
+{
+    var services=scope.ServiceProvider;
+    await IdentitySeed.SeedAdminAsync(services);
+}
 
 app.UseCustomMiddlewares();
 

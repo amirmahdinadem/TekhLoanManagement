@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TekhLoanManagement.Infrastructure.Context;
 
@@ -11,9 +12,11 @@ using TekhLoanManagement.Infrastructure.Context;
 namespace TekhLoanManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(TekhLoanDbContext))]
-    partial class TekhLoanDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260202132339_MohammadSync1")]
+    partial class MohammadSync1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -310,9 +313,6 @@ namespace TekhLoanManagement.Infrastructure.Migrations
                     b.Property<Guid?>("MemberId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<double>("ProfitRate")
-                        .HasColumnType("float");
-
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date");
 
@@ -494,9 +494,6 @@ namespace TekhLoanManagement.Infrastructure.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("Frozen")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -667,7 +664,7 @@ namespace TekhLoanManagement.Infrastructure.Migrations
 
             modelBuilder.Entity("TekhLoanManagement.Domain.Entities.Installment", b =>
                 {
-                    b.HasOne("TekhLoanManagement.Domain.Entities.Loan", null)
+                    b.HasOne("TekhLoanManagement.Domain.Entities.Loan", "Loan")
                         .WithMany("Installments")
                         .HasForeignKey("LoanId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -676,6 +673,8 @@ namespace TekhLoanManagement.Infrastructure.Migrations
                     b.HasOne("TekhLoanManagement.Domain.Entities.Transaction", "Transaction")
                         .WithOne("Installment")
                         .HasForeignKey("TekhLoanManagement.Domain.Entities.Installment", "TransactionId");
+
+                    b.Navigation("Loan");
 
                     b.Navigation("Transaction");
                 });
