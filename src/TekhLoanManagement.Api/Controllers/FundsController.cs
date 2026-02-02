@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TekhLoanManagement.Application.CQRS.Commands.Funds;
@@ -14,6 +15,7 @@ namespace TekhLoanManagement.Api.Controllers
     {
 
         private readonly IMediator _mediator;
+
 
         public FundsController(IMediator mediator)
         {
