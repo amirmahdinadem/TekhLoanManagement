@@ -13,12 +13,10 @@
     <Folder Include="CQRS\Commands\Loans\" />
     <Folder Include="CQRS\Commands\Members\" />
     <Folder Include="CQRS\Commands\Lotteries\" />
-    <Folder Include="CQRS\Handlers\Funds\" />
     <Folder Include="CQRS\Handlers\Installments\" />
     <Folder Include="CQRS\Handlers\Loans\" />
     <Folder Include="CQRS\Handlers\Lotteries\" />
     <Folder Include="CQRS\Handlers\Members\" />
-    <Folder Include="CQRS\Queries\Funds\" />
     <Folder Include="CQRS\Queries\Lotteries\" />
     <Folder Include="DTOs\Requests\Funds\" />
     <Folder Include="DTOs\Requests\Installments\" />

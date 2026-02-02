@@ -12,15 +12,21 @@ namespace TekhLoanManagement.Domain.Entities
         public Fund(decimal monthlyPaymentAmount,
                     int numberOfInstallments,
                     double profitRate,
-                    Guid walletAccountId)
+                    Guid walletAccountId
+            , WalletAccount walletAccount)
         {
             MonthlyPaymentAmount = monthlyPaymentAmount;    
             NumberOfInstallments = numberOfInstallments;    
             ProfitRate = profitRate;    
-            WalletAccountId = walletAccountId;  
-            StartDate = DateOnly.FromDateTime(DateTime.Now);
+            WalletAccountId = walletAccountId;
+            WalletAccount = walletAccount;
+            StartDate =DateOnly.FromDateTime(DateTime.Now);
             SeedMoney = CalculateSeedMoney(monthlyPaymentAmount,
-                                            numberOfInstallments);
+                                           numberOfInstallments);
+            if (!CheckWallet())
+            {
+                throw new DomainException("Please Charge your Wallet Account");
+            }
             IsActive = true;    
            
         }
@@ -35,6 +41,7 @@ namespace TekhLoanManagement.Domain.Entities
         public DateOnly? EndDate { get; private set; }
         public double ProfitRate { get; private set; }
         public decimal SeedMoney { get; private set; }
+        public WalletAccount WalletAccount { get; private set; }
         public Guid WalletAccountId { get; private set; }
         public bool IsActive {  get; private set; }
 
@@ -48,7 +55,18 @@ namespace TekhLoanManagement.Domain.Entities
         {
            return (monthlyPaymentAmount+
                    (monthlyPaymentAmount/numberOfInstallments))*
-                   (numberOfInstallments/2);
+                   (numberOfInstallments/2m);
+        }
+        private bool CheckWallet()
+        {
+            if (WalletAccount.Balance >= SeedMoney)
+            {
+                return true;
+            }
+            else
+            {
+                return false;       
+            }
         }
         public void DeActiveFund() {
             if (IsActive)
@@ -60,7 +78,6 @@ namespace TekhLoanManagement.Domain.Entities
 
 
 
-       //public WalletAccount WalletAccount { get; private set; }
         //private List<Loan> _loans = new List<Loan>(); 
         //public IReadOnlyCollection<Loan>? Loans  => _loans ;
         //public void AddLoan(Loan loan) => _loans.Add(loan);

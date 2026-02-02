@@ -23,12 +23,8 @@ namespace TekhLoanManagement.Application.CQRS.Handlers.Funds.QueryHandlers
         public async Task<FundDto> Handle(GetFundByIdQuery request, CancellationToken cancellationToken) 
         {
             var fund = await _unitOfWork.Funds.GetByIdAsync(request.Id, cancellationToken);
-
-
             if (fund == null)
                 throw new Exception("Fund not found");
-            var fund1 = await _unitOfWork.Funds.QuerySingleAsync(
-
             return _mapper.Map<FundDto>(fund);
         }
         //var a = await _unitOfWork.Loans.QueryAsync(
