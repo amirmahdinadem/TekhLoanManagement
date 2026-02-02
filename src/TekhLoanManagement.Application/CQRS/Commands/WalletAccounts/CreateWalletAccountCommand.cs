@@ -10,5 +10,6 @@ namespace TekhLoanManagement.Application.CQRS.Commands.WalletAccounts
     public class CreateWalletAccountCommand : ICommand<WalletAccountResponseDto>
     {
         public WalletAccountType Type { get; set; }
+        public Guid UserId { get; set; }
     }
 }

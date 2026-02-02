@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="CQRS\Behaviors\" />
     <Folder Include="CQRS\Commands\Funds\" />
     <Folder Include="CQRS\Commands\Installments\" />
     <Folder Include="CQRS\Commands\Lotteries\" />
@@ -25,12 +24,9 @@
     <Folder Include="DTOs\Requests\Loans\" />
     <Folder Include="DTOs\Requests\Lotteries\" />
     <Folder Include="DTOs\Requests\Members\" />
-    <Folder Include="DTOs\Requests\Transactions\" />
-    <Folder Include="DTOs\Requests\WalletAccounts\" />
     <Folder Include="DTOs\Responses\Funds\" />
     <Folder Include="DTOs\Responses\Lotteries\" />
     <Folder Include="DTOs\Responses\Members\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>

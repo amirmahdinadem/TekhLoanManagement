@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using TekhLoanManagement.Application.CQRS.Behaviors;
 
 namespace TekhLoanManagement.Api.Extensions.ServiceCollection
 {
@@ -8,8 +9,10 @@ namespace TekhLoanManagement.Api.Extensions.ServiceCollection
            this IServiceCollection services)
         {
             services.AddMediatR(cfg =>
-            cfg.RegisterServicesFromAssembly(Assembly.Load("TekhLoanManagement.Application")));
-
+            {
+                cfg.RegisterServicesFromAssembly(Assembly.Load("TekhLoanManagement.Application"));
+                cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
+            });
             return services;
         }
     }

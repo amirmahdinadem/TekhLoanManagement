@@ -6,6 +6,6 @@ namespace TekhLoanManagement.Domain.Enums
 {
    public enum TransactionType
     {
-
+        Transfer
     }
 }

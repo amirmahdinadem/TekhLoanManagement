@@ -24,7 +24,6 @@ namespace TekhLoanManagement.Domain.Entities
         public Guid? MemberId { get; set; }
         public Member? Member { get; set; }
         public Guid FundId { get; set; }
-        public Fund? Fund { get; set; }
         public Guid LotteryId { get; set; }
         public Lottery? Lottery { get; set; }
         public decimal Amount { get; set; }
@@ -35,7 +34,7 @@ namespace TekhLoanManagement.Domain.Entities
         {
             for (int i = 0; i < InstallmentCount; i++)
             {
-                Installments.Add(new Installment(Id, (Amount + (Amount * (decimal)(profitRate / 100)) / InstallmentCount), StartDate.AddMonths(i)));
+                Installments.Add(new Installment(Id, (Amount + ((Amount * (decimal)(profitRate / 100))) / InstallmentCount), StartDate.AddMonths(i)));
 
             }
         }
