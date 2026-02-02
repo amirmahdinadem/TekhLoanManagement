@@ -52,6 +52,7 @@ public class CreateLoanCommandHandler : ICommandHandler<CreateLoanCommand, LoanD
         //        StartDate = x.StartDate,
         //    },
         //    asNoTracking: true);
+        
         foreach (var item in loan.Installments)
         {
             await _unitOfWork.Installments.AddAsync(item, cancellationToken);

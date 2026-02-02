@@ -7,6 +7,7 @@ namespace TekhLoanManagement.Application.DTOs.Responses.Funds
 {
     public class FundDto
     {
+        public Guid Id { get; set; }    
         public decimal MonthlyPaymentAmount { get; set; }
         public int NumberOfInstallments { get; set; }
         public DateOnly StartDate { get;  set; }

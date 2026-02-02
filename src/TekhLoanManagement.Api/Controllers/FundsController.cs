@@ -1,9 +1,12 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TekhLoanManagement.Application.CQRS.Commands.Funds;
 using TekhLoanManagement.Application.CQRS.Queries.Funds;
 using TekhLoanManagement.Application.DTOs.Responses.Funds;
+using TekhLoanManagement.Application.DTOs.Responses.Members;
 
 namespace TekhLoanManagement.Api.Controllers
 {
@@ -14,12 +17,14 @@ namespace TekhLoanManagement.Api.Controllers
 
         private readonly IMediator _mediator;
 
+
         public FundsController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<FundDto>>> GetFunds(
             CancellationToken cancellationToken)
         {
@@ -30,7 +35,29 @@ namespace TekhLoanManagement.Api.Controllers
             return Ok(funds);
         }
 
+        [HttpGet("CalculateSeedMoney")]
+        [Authorize]
+        public async Task<ActionResult<decimal>> GetFundSeedMoney ([FromQuery] CalculateSeedMoneyQuery query,
+        CancellationToken cancellationToken)
+        {
+            var seedmoney = await _mediator.Send( query, cancellationToken);
+
+            return Ok(seedmoney);
+        }
+
+        [HttpGet ("GetMembersByFund")]
+        [Authorize]
+        public async Task<ActionResult<IEnumerable<MemberResponseDto>>> GetMembersByFund(
+            [FromQuery] GetMembersByFundQuery query ,
+            CancellationToken cancellationToken)
+        {
+            var memberList = await _mediator.Send(query,cancellationToken);    
+            return Ok(memberList);  
+        }
+
+
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<FundDto>> GetFunds(
             Guid id,
             CancellationToken cancellationToken)
@@ -45,18 +72,18 @@ namespace TekhLoanManagement.Api.Controllers
             return Ok(fund);
         }
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<Guid>> PostFunds(
            CreateFundCommand command,
        CancellationToken cancellationToken)
         {
-            var fundId = await _mediator.Send(command, cancellationToken);
+            var fundId = await _mediator.Send(command, cancellationToken); 
 
-            return CreatedAtAction(
-                nameof(GetFunds),
-                new { id = fundId },
-                fundId);
+            return Ok(fundId);
         }
+
         [HttpPost("{fundId}/members")]
+        [Authorize]
         public async Task<IActionResult> AddMember(
             Guid fundId,
             [FromBody] Guid memberId,
@@ -68,18 +95,5 @@ namespace TekhLoanManagement.Api.Controllers
             return NoContent();
         }
 
-
-
-        [HttpPost("{fundId:guid}/loans")]
-        public async Task<IActionResult> AddLoan(
-         Guid fundId,
-         [FromBody] Guid loanId,
-         CancellationToken cancellationToken)
-        {
-            var command = new AddLoanCommand(fundId, loanId);
-
-            await _mediator.Send(command, cancellationToken);
-            return NoContent();
-        }
     }
 }
