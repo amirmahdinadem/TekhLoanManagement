@@ -39,6 +39,8 @@ namespace TekhLoanManagement.Domain.Entities
                 throw new DomainException("Member Not Found");
             Loan.Member = member;
             Loan.MemberId = member.Id;
+            Members.ForEach(x => x.IncreasePoint());
+            member.ResetPoint();
         }
     }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Net;
 using System.Text;
 using TekhLoanManagement.Domain.Abstractions;
 using TekhLoanManagement.Domain.Enums;
@@ -30,13 +31,14 @@ namespace TekhLoanManagement.Domain.Entities
         public decimal Amount { get; set; }
         public double ProfitRate { get; set; }
         public int InstallmentCount { get; set; }
-        public ICollection<Installment>? Installments { get; set; } = new List<Installment>();
+        private readonly List<Installment> _installments = new List<Installment>();
+        public IReadOnlyCollection<Installment> Installments => _installments.AsReadOnly();
 
         public void CreateLoanInstallment()
         {
             for (int i = 1; i <= InstallmentCount; i++)
             {
-                Installments.Add(new Installment(Id, (Amount + ((Amount * (decimal)(ProfitRate / 100))) / InstallmentCount), StartDate.AddMonths(i)));
+                _installments.Add(new Installment(Id, (Amount + ((Amount * (decimal)(ProfitRate / 100))) / InstallmentCount), StartDate.AddMonths(i)));
             }
         }
         public void CreateLottery()
