@@ -8,7 +8,7 @@ namespace TekhLoanManagement.Domain.Entities
 {
     public class User : IdentityUser<Guid> //Karbar Vorod Be System
     {
-        public Guid MemberId { get; set; }
+        public Guid? MemberId { get; set; }
         public Member? Member { get; set; }
     }
 }

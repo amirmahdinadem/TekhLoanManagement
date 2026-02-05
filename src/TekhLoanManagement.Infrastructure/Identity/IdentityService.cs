@@ -17,21 +17,21 @@ namespace TekhLoanManagement.Infrastructure.Identity
         private readonly ILogger<IdentityService> _logger;
         private readonly IJwtTokenService _jwtTokenService;
         private readonly IRefreshTokenService _refreshTokenService;
-        private readonly IValidator<LoginDto> _validator;
-        private readonly IValidator<RegisterDto> _registerValidator;
+        //private readonly IValidator<LoginDto> _validator;
+        //private readonly IValidator<RegisterDto> _registerValidator;
 
-        public IdentityService(UserManager<User> userManager, ILogger<IdentityService> logger, IJwtTokenService jwtTokenService, IRefreshTokenService refreshTokenService ,IValidator<LoginDto> validator, IValidator<RegisterDto> registerValidator)
+        public IdentityService(UserManager<User> userManager, ILogger<IdentityService> logger, IJwtTokenService jwtTokenService, IRefreshTokenService refreshTokenService)
         {
             _userManager = userManager;
             _logger = logger;
             _jwtTokenService = jwtTokenService;
             _refreshTokenService = refreshTokenService;
-            _validator = validator;
-            _registerValidator = registerValidator;
+            //_validator = validator;
+            //_registerValidator = registerValidator;
         }
         public async Task<(string AccessToken, string RefreshToken)> LoginAsync(LoginDto input)
         {
-            await _validator.ValidateAndThrowAsync(input);
+            //await _validator.ValidateAndThrowAsync(input);
             //if (string.IsNullOrWhiteSpace(input.UserName) ||
             //    string.IsNullOrWhiteSpace(input.Password))
             //    throw new ArgumentException("Username and password are required.");
@@ -53,7 +53,7 @@ namespace TekhLoanManagement.Infrastructure.Identity
         }
         public async Task RegisterAsync(RegisterDto input)
         {
-            await _registerValidator.ValidateAndThrowAsync(input);
+            //await _registerValidator.ValidateAndThrowAsync(input);
             //if (string.IsNullOrWhiteSpace(input.UserName) ||
             //    string.IsNullOrWhiteSpace(input.Password))
             //    throw new ArgumentException("UserName and password are required.");

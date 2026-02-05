@@ -18,11 +18,17 @@ namespace TekhLoanManagement.Application.CQRS.Handlers.Funds.CommandHandlers
 
     public async Task<Guid> Handle(CreateFundCommand request , CancellationToken cancellationToken)
         {
+            var wallet = await _unitOfWork.WalletAccounts.GetByIdAsync(request.WalletAccountId, cancellationToken);
+            if (wallet == null) { throw new Exception("Invalid Wallet"); }
+            
             var fund = new Fund(
                 request.MonthlyPaymentAmount,
                 request.NumberOfInstallments,
                 request.ProfitRate,
-                request.WalletAccountId);
+                request.WalletAccountId,
+                wallet
+                 
+                );
 
             await _unitOfWork.Funds.AddAsync( fund ,cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
