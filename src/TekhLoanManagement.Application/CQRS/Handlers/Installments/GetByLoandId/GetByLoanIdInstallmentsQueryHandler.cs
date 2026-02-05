@@ -23,9 +23,7 @@ namespace TekhLoanManagement.Application.CQRS.Handlers.Installments.GetByLoandId
         public async Task<IEnumerable<InstallmentDto>> Handle(GetByLoanIdInstallmentsQuery request, CancellationToken cancellationToken)
         {
             var installments = await _unitOfWork.Installments
-                .QueryAsync<Installment>(include: x => x.Include(x => x.Transaction)
-                                                        .Include(x => x.Loan)
-                                                        .ThenInclude(x => x.Member),
+                .QueryAsync<Installment>(include: x => x.Include(x => x.Transaction),
                                          predicate: x => x.LoanId == request.LoanId
                                                         );
             if (installments == null)

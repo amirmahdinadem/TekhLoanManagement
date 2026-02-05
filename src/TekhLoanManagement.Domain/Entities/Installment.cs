@@ -18,7 +18,6 @@ namespace TekhLoanManagement.Domain.Entities
             DueDate = dueDate;
         }
         public Guid LoanId { get; set; }
-        public Loan? Loan { get; set; }
         public decimal Amount { get; set; }
         public DateOnly DueDate { get; set; }
         public InstallmentStatus Status { get; set; } = InstallmentStatus.NotPaid;

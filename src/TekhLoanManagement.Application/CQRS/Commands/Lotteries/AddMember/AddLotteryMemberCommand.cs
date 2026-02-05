@@ -7,7 +7,7 @@ using TekhLoanManagement.Application.CQRS.Interfaces;
 
 namespace TekhLoanManagement.Application.CQRS.Commands.Lotteries.AddMember
 {
-    public record AddLotteryMemberCommand(Guid MemberId, Guid LoanId) : ICommand
+    public record AddLotteryMemberCommand(Guid MemberId, Guid LotteryId) : ICommand
     {
     }
 

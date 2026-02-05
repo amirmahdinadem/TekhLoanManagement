@@ -23,12 +23,24 @@ namespace TekhLoanManagement.Application.CQRS.Handlers.Funds.QueryHandlers
         public async Task<FundDto> Handle(GetFundByIdQuery request, CancellationToken cancellationToken) 
         {
             var fund = await _unitOfWork.Funds.GetByIdAsync(request.Id, cancellationToken);
-
-
             if (fund == null)
-                throw new KeyNotFoundException("Fund not found");
-
+                throw new Exception("Fund not found");
             return _mapper.Map<FundDto>(fund);
         }
+        //var a = await _unitOfWork.Loans.QueryAsync(
+        //    include: x => x.Include(x => x.Fund),
+        //    predicate: x => x.StartDate > DateOnly.FromDateTime(DateTime.Now) && x.Amount < 1000_000,
+
+        //    orderBy: x => x.OrderByDescending(z => z.Id),
+        //    selector: x => new LoanDto
+        //    {
+        //        Id = x.Id,
+        //        Amount = x.Amount,
+        //        InstallmentCount = x.InstallmentCount,
+        //        MemberId = x.MemberId,
+        //        StartDate = x.StartDate,
+        //    },
+        //    asNoTracking: true);
+
     }
 }

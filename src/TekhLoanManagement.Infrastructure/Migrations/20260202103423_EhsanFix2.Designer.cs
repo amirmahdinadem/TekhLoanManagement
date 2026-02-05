@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TekhLoanManagement.Infrastructure.Context;
 
@@ -11,9 +12,11 @@ using TekhLoanManagement.Infrastructure.Context;
 namespace TekhLoanManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(TekhLoanDbContext))]
-    partial class TekhLoanDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260202103423_EhsanFix2")]
+    partial class EhsanFix2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,7 +40,7 @@ namespace TekhLoanManagement.Infrastructure.Migrations
 
                     b.HasIndex("MembersId");
 
-                    b.ToTable("FundMember", (string)null);
+                    b.ToTable("FundMember");
                 });
 
             modelBuilder.Entity("LotteryMember", b =>
@@ -52,7 +55,7 @@ namespace TekhLoanManagement.Infrastructure.Migrations
 
                     b.HasIndex("MembersId");
 
-                    b.ToTable("LotteryMember", (string)null);
+                    b.ToTable("LotteryMember");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -228,9 +231,6 @@ namespace TekhLoanManagement.Infrastructure.Migrations
                     b.Property<DateOnly?>("EndDate")
                         .HasColumnType("date");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
                     b.Property<decimal>("MonthlyPaymentAmount")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
@@ -255,7 +255,7 @@ namespace TekhLoanManagement.Infrastructure.Migrations
                     b.HasIndex("WalletAccountId")
                         .IsUnique();
 
-                    b.ToTable("Funds", (string)null);
+                    b.ToTable("Funds");
                 });
 
             modelBuilder.Entity("TekhLoanManagement.Domain.Entities.Installment", b =>
@@ -288,7 +288,7 @@ namespace TekhLoanManagement.Infrastructure.Migrations
                         .IsUnique()
                         .HasFilter("[TransactionId] IS NOT NULL");
 
-                    b.ToTable("Installments", (string)null);
+                    b.ToTable("Installments");
                 });
 
             modelBuilder.Entity("TekhLoanManagement.Domain.Entities.Loan", b =>
@@ -313,20 +313,19 @@ namespace TekhLoanManagement.Infrastructure.Migrations
                     b.Property<Guid?>("MemberId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<double>("ProfitRate")
-                        .HasColumnType("float");
-
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FundId");
 
                     b.HasIndex("LotteryId")
                         .IsUnique();
 
                     b.HasIndex("MemberId");
 
-                    b.ToTable("Loans", (string)null);
+                    b.ToTable("Loans");
                 });
 
             modelBuilder.Entity("TekhLoanManagement.Domain.Entities.Lottery", b =>
@@ -340,7 +339,7 @@ namespace TekhLoanManagement.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Lotteries", (string)null);
+                    b.ToTable("Lotteries");
                 });
 
             modelBuilder.Entity("TekhLoanManagement.Domain.Entities.Member", b =>
@@ -362,9 +361,6 @@ namespace TekhLoanManagement.Infrastructure.Migrations
                     b.Property<string>("LastName")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("Point")
-                        .HasColumnType("int");
 
                     b.Property<int>("Point")
                         .HasColumnType("int");
@@ -412,7 +408,7 @@ namespace TekhLoanManagement.Infrastructure.Migrations
 
                     b.HasIndex("DebitWalletAccountId");
 
-                    b.ToTable("Transactions", (string)null);
+                    b.ToTable("Transactions");
                 });
 
             modelBuilder.Entity("TekhLoanManagement.Domain.Entities.User", b =>
@@ -441,7 +437,7 @@ namespace TekhLoanManagement.Infrastructure.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid?>("MemberId")
+                    b.Property<Guid>("MemberId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("NormalizedEmail")
@@ -474,8 +470,7 @@ namespace TekhLoanManagement.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("MemberId")
-                        .IsUnique()
-                        .HasFilter("[MemberId] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -572,39 +567,9 @@ namespace TekhLoanManagement.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("WalletAccounts", (string)null);
-                });
-
-            modelBuilder.Entity("TekhLoanManagement.Infrastructure.Security.RefreshToken", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ExpiresAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("RevokedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("RevokedReason")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Token")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
                     b.HasIndex("UserId");
 
-                    b.ToTable("RefreshTokens", (string)null);
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("FundMember", b =>
@@ -690,16 +655,18 @@ namespace TekhLoanManagement.Infrastructure.Migrations
 
             modelBuilder.Entity("TekhLoanManagement.Domain.Entities.Fund", b =>
                 {
-                    b.HasOne("TekhLoanManagement.Domain.Entities.WalletAccount", null)
+                    b.HasOne("TekhLoanManagement.Domain.Entities.WalletAccount", "WalletAccount")
                         .WithOne("Fund")
                         .HasForeignKey("TekhLoanManagement.Domain.Entities.Fund", "WalletAccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("WalletAccount");
                 });
 
             modelBuilder.Entity("TekhLoanManagement.Domain.Entities.Installment", b =>
                 {
-                    b.HasOne("TekhLoanManagement.Domain.Entities.Loan", null)
+                    b.HasOne("TekhLoanManagement.Domain.Entities.Loan", "Loan")
                         .WithMany("Installments")
                         .HasForeignKey("LoanId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -708,6 +675,8 @@ namespace TekhLoanManagement.Infrastructure.Migrations
                     b.HasOne("TekhLoanManagement.Domain.Entities.Transaction", "Transaction")
                         .WithOne("Installment")
                         .HasForeignKey("TekhLoanManagement.Domain.Entities.Installment", "TransactionId");
+
+                    b.Navigation("Loan");
 
                     b.Navigation("Transaction");
                 });
@@ -771,7 +740,8 @@ namespace TekhLoanManagement.Infrastructure.Migrations
                     b.HasOne("TekhLoanManagement.Domain.Entities.Member", "Member")
                         .WithOne("User")
                         .HasForeignKey("TekhLoanManagement.Domain.Entities.User", "MemberId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Member");
                 });
@@ -787,9 +757,9 @@ namespace TekhLoanManagement.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("TekhLoanManagement.Domain.Entities.Loan", b =>
+            modelBuilder.Entity("TekhLoanManagement.Domain.Entities.Fund", b =>
                 {
-                    b.Navigation("Installments");
+                    b.Navigation("Loans");
                 });
 
             modelBuilder.Entity("TekhLoanManagement.Domain.Entities.Loan", b =>

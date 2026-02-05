@@ -22,12 +22,16 @@ namespace TekhLoanManagement.Application.CQRS.Handlers.Installments.GetByMemberI
         }
         public async Task<IEnumerable<InstallmentDto>> Handle(GetByMemberIdInstallmentQuery request, CancellationToken cancellationToken)
         {
-            var installments = await _unitOfWork.Installments
-                .QueryAsync<Installment>(include: x => x.Include(x => x.Transaction)
-                                                        .Include(x => x.Loan)
-                                                        .ThenInclude(x => x.Member),
-                                         predicate: x => x.Loan.MemberId == request.MemberId
+            var loan = await _unitOfWork.Loans
+                .QueryAsync<Loan>(include: x => x.Include(x => x.Member)
+                                                        .Include(x => x.Installments)
+                                                        ,
+                                                  predicate: x => x.MemberId == request.MemberId,
+                                                  selector:x=>x
+                                                 
             );
+            
+            var installments = loan.SelectMany(x => x.Installments).ToList();
             if (installments == null)
                 throw new NotFoundException("Installments Not found");
             return _mapper.Map<IEnumerable<InstallmentDto>>(installments);

@@ -11,7 +11,8 @@ namespace TekhLoanManagement.Application.Interfaces
     {
         Task<(string AccessToken, string RefreshToken)> LoginAsync(LoginDto input);
         Task RegisterAsync(RegisterDto input);
-        Task LogoutAsync(Guid userId);
+        Task LogoutAsync(
+            Guid userId);
         Task<User> GetUserAsync(ClaimsPrincipal userPrincipal);
         Task<(string AccessToken, string RefreshToken)> RefreshTokenAsync(string refreshToken);
 

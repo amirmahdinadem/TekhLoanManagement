@@ -11,13 +11,14 @@ namespace TekhLoanManagement.Domain.Entities
     public class Loan : BaseEntity<Guid> //Vam
     {
         protected Loan() { } //Ef
-        public Loan(Guid fundId, decimal amount, int installmentCount, int startMonth, int startYear)
+        public Loan(Guid fundId, decimal amount, int installmentCount, int startMonth, int startYear, double profitRate)
         {
             Guard(amount, installmentCount, startMonth, startYear);
             FundId = fundId;
             Amount = amount;
             StartDate = new DateOnly(startYear, startMonth, 1);
             InstallmentCount = installmentCount;
+            ProfitRate = profitRate;
         }
 
         public DateOnly StartDate { get; set; }
@@ -27,20 +28,22 @@ namespace TekhLoanManagement.Domain.Entities
         public Guid LotteryId { get; set; }
         public Lottery? Lottery { get; set; }
         public decimal Amount { get; set; }
+        public double ProfitRate { get; set; }
         public int InstallmentCount { get; set; }
         public ICollection<Installment>? Installments { get; set; } = new List<Installment>();
 
-        public void CreateLoanInstallment(double profitRate)
+        public void CreateLoanInstallment()
         {
-            for (int i = 0; i < InstallmentCount; i++)
+            for (int i = 1; i <= InstallmentCount; i++)
             {
-                Installments.Add(new Installment(Id, (Amount + ((Amount * (decimal)(profitRate / 100))) / InstallmentCount), StartDate.AddMonths(i)));
-
+                Installments.Add(new Installment(Id, (Amount + ((Amount * (decimal)(ProfitRate / 100))) / InstallmentCount), StartDate.AddMonths(i)));
             }
         }
-        public Lottery CreateLottery()
+        public void CreateLottery()
         {
-            return new Lottery();
+            var lottery = new Lottery();
+            LotteryId = lottery.Id;
+            Lottery = lottery;
         }
         public void Guard(decimal amount, int installmentCount, int stratMonth, int startYear)
         {
@@ -53,5 +56,6 @@ namespace TekhLoanManagement.Domain.Entities
             if (installmentCount < 0)
                 throw new DomainException("Installment Count must not be less than zero.");
         }
+
     }
 }
