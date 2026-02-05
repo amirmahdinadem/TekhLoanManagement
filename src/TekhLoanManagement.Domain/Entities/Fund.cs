@@ -40,10 +40,7 @@ namespace TekhLoanManagement.Domain.Entities
             IsActive = true;    
            
         }
-        protected Fund()
-        {
-
-        }
+        protected Fund(){ }
         public decimal MonthlyPaymentAmount { get; private set; }
         public int NumberOfInstallments { get; private set; }
         public DateOnly StartDate { get; private set; }
