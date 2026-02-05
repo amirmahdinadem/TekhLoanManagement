@@ -16,8 +16,6 @@ namespace TekhLoanManagement.Application.DTOs.Responses.Funds
         public decimal SeedMoney { get; set; }
         public Guid WalletAccountId { get; set; }
 
-        public List<Loan> _loans = new List<Loan>();
-
         public List<Member> _members = new List<Member>();
 
     }

@@ -44,7 +44,6 @@ namespace TekhLoanManagement.Domain.Entities
         {
 
         }
-
         public decimal MonthlyPaymentAmount { get; private set; }
         public int NumberOfInstallments { get; private set; }
         public DateOnly StartDate { get; private set; }
@@ -90,14 +89,6 @@ namespace TekhLoanManagement.Domain.Entities
             return ((MonthlyPaymentAmount  / NumberOfInstallments) * (decimal)ProfitRate)*3;
         }
 
-
-
-        //private List<Loan> _loans = new List<Loan>(); 
-        //public IReadOnlyCollection<Loan>? Loans  => _loans ;
-        //public void AddLoan(Loan loan) => _loans.Add(loan);
-        
-
-       
 
 
     }

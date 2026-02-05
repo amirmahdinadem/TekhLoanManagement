@@ -30,6 +30,7 @@ namespace TekhLoanManagement.Domain.Entities
         }
         public void Celebration()
         {
+            //ToDo :  increase and reset the points
             if (!Members.Any())
                 throw new DomainException("Lottery Have Not Member");
             Random random = new Random();
@@ -39,6 +40,7 @@ namespace TekhLoanManagement.Domain.Entities
                 throw new DomainException("Member Not Found");
             Loan.Member = member;
             Loan.MemberId = member.Id;
+           
         }
     }
 

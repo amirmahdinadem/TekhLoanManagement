@@ -37,24 +37,23 @@ namespace TekhLoanManagement.Api.Controllers
 
         [HttpGet("CalculateSeedMoney")]
         [Authorize]
-        public async Task<ActionResult<decimal>> GetFundSeedMoney ([FromQuery] CalculateSeedMoneyQuery query,
+        public async Task<ActionResult<decimal>> GetFundSeedMoney([FromQuery] CalculateSeedMoneyQuery query,
         CancellationToken cancellationToken)
         {
-            var seedmoney = await _mediator.Send( query, cancellationToken);
+            var seedmoney = await _mediator.Send(query, cancellationToken);
 
             return Ok(seedmoney);
         }
 
-        [HttpGet ("GetMembersByFund")]
+        [HttpGet("GetMembersByFund{id}")]
         [Authorize]
-        public async Task<ActionResult<IEnumerable<MemberResponseDto>>> GetMembersByFund(
-            [FromQuery] GetMembersByFundQuery query ,
+        public async Task<ActionResult<IEnumerable<MemberResponseDto>>> GetMembersByFundId(
+            [FromQuery] GetMembersByFundQuery query,
             CancellationToken cancellationToken)
         {
-            var memberList = await _mediator.Send(query,cancellationToken);    
-            return Ok(memberList);  
+            var memberList = await _mediator.Send(query, cancellationToken);
+            return Ok(memberList);
         }
-
 
         [HttpGet("{id}")]
         [Authorize]
@@ -71,13 +70,15 @@ namespace TekhLoanManagement.Api.Controllers
 
             return Ok(fund);
         }
+
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult<Guid>> PostFunds(
+
+        public async Task<ActionResult<Guid>> PostFund(
            CreateFundCommand command,
        CancellationToken cancellationToken)
         {
-            var fundId = await _mediator.Send(command, cancellationToken); 
+            var fundId = await _mediator.Send(command, cancellationToken);
 
             return Ok(fundId);
         }

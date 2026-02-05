@@ -29,6 +29,8 @@ namespace TekhLoanManagement.Domain.Entities
         public WalletAccountStatus Status { get; private set; } = WalletAccountStatus.Active;
         public Member? Member { get; private set; }
         public Fund? Fund { get; private set; }
+        // Todo: Private collection And
+        // Todo: Relation fund and Wallet
         public ICollection<Transaction>? DebitTransactions { get; set; } = new List<Transaction>();
         public ICollection<Transaction>? CreditTransactions { get; set; } = new List<Transaction>();
 
